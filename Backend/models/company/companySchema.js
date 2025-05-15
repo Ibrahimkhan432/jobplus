@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 const companySchema = new mongoose.Schema(
   {
-    name: { type: string, required: true },
-    description: { type: string },
-    website: { type: string },
-    location: { type: string },
-    logo: { type: string },
+    name: { type: String, required: true,unique:true },
+    description: { type: String },
+    website: { type: String },
+    location: { type: String },
+    logo: { type: String },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
