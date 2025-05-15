@@ -5,6 +5,6 @@
         await mongoose.connect(process.env.BASE_URI);
       console.log(`MongoDB Connected`);
     } catch (error) {
-      console.log("mongo db connection error",error)
+      console.log("mongo db connection error: ",error)
     }
   };
