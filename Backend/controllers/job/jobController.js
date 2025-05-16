@@ -1,4 +1,4 @@
-import Job from "../../models/job/jobSchema";
+import Job from "../../models/job/jobSchema.js";
 
 export const postJob = async (req, res) => {
   try {
@@ -11,20 +11,20 @@ export const postJob = async (req, res) => {
       position,
       jobType,
       companyId,
-      experienceLevel,
+      experience,
     } = req.body;
     const userId = req.id;
 
     if (
       (!title,
       !description,
-      !salary,
+      !salary,  
       !location,
       !requirement,
       !position,
       !jobType,
       !companyId,
-      !experienceLevel)
+      !experience)
     ) {
       res.status(404).json({
         message: "Please fill all fields",
@@ -41,7 +41,7 @@ export const postJob = async (req, res) => {
       position,
       jobType,
       company: companyId,
-      experienceLevel: experience,
+      experience,
       created_by: userId,
     });
     return res.status(201).json({
@@ -63,7 +63,9 @@ export const getAllJobs = async (req, res) => {
         { description: { $regex: keyword, $options: "i" } },
       ],
     };
-    const jobs = await job.find(query);
+    const jobs = await Job.find(query).populate({
+      path:"company"
+    }).sort({createdAt:-1});
     if (!jobs) {
       res.status(404).json({
         message: "jobs not found",
@@ -82,7 +84,7 @@ export const getAllJobs = async (req, res) => {
 export const getJobById = async (req, res) => {
   try {
     const jobId = req.params.id;
-    const job = await job.findById(jobId);
+    const job = await Job.findById(jobId);
     if (!job) {
       return res.status(404).json({
         mssage: "job not found",
@@ -95,5 +97,24 @@ export const getJobById = async (req, res) => {
     });
   } catch (error) {
     console.log("error in gettingjob", error);
+  }
+};
+
+export const getAdminJobs = async (req, res) => {
+  try {
+    const adminId = req.id;
+    const jobs = await Job.find({ created_by: adminId });
+    if (!jobs) {
+      return res.status(404).json({
+        message: "jobs not found",
+        success: false,
+      });
+    }
+    return res.status(201).json({
+      success: true,
+      jobs,
+    });
+  } catch (error) {
+    console.log("error in getting admin jobs", error);
   }
 };
