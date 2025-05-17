@@ -1,0 +1,278 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { User, LogOut, Menu, Search, Bell } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Link } from "react-router-dom"
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  const user = null // Change to an object with properties when logged in
+//   const user = {
+//     name: "John Doe",
+//     image: "/placeholder.svg?height=40&width=40",
+//     initials: "JD",
+//   }
+
+  // Handle scroll event to change navbar background
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY
+      if (offset > 100) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
+  return (
+    <nav
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled ?"bg-gradient-to-r from-blue-200 to-blue-100  shadow-md" : "bg-transparent backdrop-blur-sm"
+      }`}
+    >
+      <div className="flex h-16 items-center lg:px-35 md:px-20 container mx-auto">
+        <div className="flex items-center mr-6">
+          <Link to="/" className="flex items-center gap-2">
+            <div
+              className={`bgMain-gradient p-2 rounded-lg shadow-md ${scrolled ? "" : ""}`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-5 w-5"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+            </div>
+            <div className="flex flex-col">
+              <span
+                className={`text-xl font-extrabold ${
+                  scrolled ? "text-blue-600" : "bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100"
+                }`}
+              >
+                Job Plus
+              </span>
+              <span className={`text-xs font-medium -mt-1 ${scrolled ? "text-blue-500" : "text-blue-100"}`}>
+                Find Your Dream Career
+              </span>
+            </div>
+          </Link>
+        </div>
+
+        <div className="hidden md:flex items-center space-x-1">
+          <Link
+            to="/"
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              scrolled
+                ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                : "hover:bg-white/20 hover:text-white text-white"
+            }`}
+          >
+            Home
+          </Link>
+          <Link
+            to="/jobs"
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              scrolled
+                ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                : "hover:bg-white/20 hover:text-white text-white"
+            }`}
+          >
+            Jobs
+          </Link>
+          <Link
+            to="/browser"
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              scrolled
+                ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                : "hover:bg-white/20 hover:text-white text-white"
+            }`}
+          >
+            Browser
+          </Link>
+        </div>
+
+        <div className="flex-1 md:flex-none md:w-auto flex justify-end md:justify-start ml-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className={scrolled ? "text-gray-700 hover:bg-blue-50" : "text-white hover:bg-white/20"}
+          >
+            <Search className="h-5 w-5" />
+          </Button>
+        </div>
+
+        <div className="flex items-center ml-auto gap-2">
+          {user ? (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={scrolled ? "text-gray-700 hover:bg-blue-50" : "text-white hover:bg-white/20"}
+              >
+                <Bell className="h-5 w-5" />
+              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={`relative h-10 w-10 rounded-full p-0 overflow-hidden ${
+                      scrolled
+                        ? "border-2 border-blue-200 hover:border-blue-400"
+                        : "border-2 border-white/30 hover:border-white/60"
+                    }`}
+                  >
+                    <Avatar className="h-full w-full">
+                      <AvatarImage src={user || "/placeholder.svg"} alt={user} />
+                      <AvatarFallback className="bg-blue-100 text-blue-700">{user}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-0 overflow-hidden border-2 border-blue-100" align="end">
+                  <div className="bgMain-gradient p-4">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-12 w-12 border-2 border-white">
+                        <AvatarImage src={user || "/placeholder.svg"} alt={user} />
+                        <AvatarFallback className="bg-white text-blue-700">{user}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold text-white">{user}</span>
+                        <span className="text-xs text-blue-100">Professional Account</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-white">
+                    <div className="flex flex-col gap-2">
+                      <Button variant="ghost" size="sm" className="justify-start hover:bg-blue-50 hover:text-blue-600">
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
+                      </Button>
+                      <Button variant="ghost" size="sm" className="justify-start hover:bg-blue-50 hover:text-blue-600">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Logout
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </>
+          ) : (
+           <>
+  <Link to="/login">
+    <Button
+      variant="ghost"
+      className={`border cursor-pointer ${
+         scrolled
+          ? "bg-white text-blue-600 hover:bg-blue-50 border-blue-200"
+          : "text-white hover:bg-white/20 border-white/30"
+      }`}
+    >
+      Login
+    </Button>
+  </Link>
+  <Link to="/signup">
+    <Button className="bg-white text-blue-700 hover:bg-blue-50 cursor-pointer">
+      Sign Up
+    </Button>
+  </Link>
+</>
+
+          )}
+        </div>
+
+        {/* Mobile menu button */}
+        <div className="md:hidden ml-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={`text-base ${scrolled ? "text-gray-700" : "text-white"}`}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <span className="sr-only">Open menu</span>
+            <Menu className="h-6 w-6" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {isOpen && (
+        <div
+          className={`md:hidden px-4 pb-4 pt-2 border-t ${
+            scrolled ? "bg-white shadow-lg" : "bg-white/10 backdrop-blur-md"
+          }`}
+        >
+          <div className="flex flex-col space-y-2">
+            <Link
+              to="/"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                scrolled ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700" : "hover:bg-white/20 text-white"
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/jobs"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                scrolled ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700" : "hover:bg-white/20 text-white"
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              Jobs
+            </Link>
+            <Link
+              to="/browser"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                scrolled ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700" : "hover:bg-white/20 text-white"
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              Browser
+            </Link>
+            {!user && (
+              <div
+                className={`pt-2 mt-2 border-t ${scrolled ? "border-gray-100" : "border-white/10"} flex flex-col space-y-2`}
+              >
+                <Link
+                  to="/login"
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    scrolled ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700 bg-white" : "hover:bg-white text-white"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </nav>
+  )
+}

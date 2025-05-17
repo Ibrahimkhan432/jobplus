@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+.text-primary { color: #2563EB; }
+.text-secondary { color: #3B82F6; }
+.text-muted { color: #60A5FA; }
+.bg-primary { background-color: #2563EB; }
+.bg-secondary { background-color: #3B82F6; }
+.bg-muted { background-color: #DBEAFE; }
+.bg-primaryBg { background-color: #F9FAFB; }
+.bgMain-gradient { background: linear-gradient(to right, #1E3A8A, #2563EB); }
+.border-primary { border-color: #BFDBFE; }
+.border-secondary { border-color: #93C5FD; }
+
+/* Utility classes */
+.shadow-custom { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06); }
+.rounded-lg { border-radius: 0.5rem; }
+.transition-all { transition: all 0.2s ease-in-out; }
+
+.heading-main { font-size: 2.25rem; font-weight: 800; color: white; margin-bottom: 1rem; }
+.subheading { font-size: 1.25rem; color: #A5B4FC; margin-bottom: 2rem; }
+.btn-outline { background-color: rgba(255, 255, 255, 0.2); color: white; border-color: rgba(255, 255, 255, 0.4); }
+.btn-outline:hover { background-color: rgba(255, 255, 255, 0.3); }
