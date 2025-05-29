@@ -77,7 +77,7 @@ const jobs = [
 function LatestJobs() {
   return (
     <div>
- <section className=" bg-gradient-to-r from-blue-50 to-indigo-50">
+ <section className="px-20">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-10">
             <div>

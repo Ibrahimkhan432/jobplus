@@ -26,5 +26,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "../Backend/utils/cloudinary.ts", "../Backend/utils/utils.ts"]
 }

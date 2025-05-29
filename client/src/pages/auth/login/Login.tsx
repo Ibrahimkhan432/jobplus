@@ -1,73 +1,151 @@
-import type React from "react"
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Eye, EyeOff } from "lucide-react"
-import Navbar from "../../../components/global/Navbar"
-import { Link } from "react-router-dom"
+import type React from "react";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Navbar from "../../../components/global/Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import { RadioGroup } from "@/components/ui/radio-group";
+import axios from "axios";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoadnig, setUser } from "./../../../../redux/authSlice";
+import { Loader } from "lucide-react";
 
 export default function Login() {
-  const [formData, setFormData] = useState({
+  const [input, setInput] = useState({
     email: "",
     password: "",
-    accountType: "jobseeker",
-  })
-  const [showPassword, setShowPassword] = useState(false)
+    role: "",
+  });
+  console.log("input", input);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store: any) => store.auth);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setInput((input) => ({ ...input, [name]: value }));
+  };
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword)
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("login submitted:", formData)
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      dispatch(setLoadnig(true));
+      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        dispatch(setUser(res.data.user));
+        toast.success("Login successful");
+          navigate("/");
+      }
+    } catch (error) {
+      console.error("Error during Login:", error);
+      toast.error("Login failed. Please check your credentials.");
+    } finally {
+      dispatch(setLoadnig(false));
+    }
+    console.log("login submitted:", input);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bgMain-gradient">
       <Navbar />
-      <div className="flex-1 flex items-center justify-center">
-        <div className="container max-w-lg mx-auto p-6">
+      <div className="flex-1 flex items-center justify-center mx-auto w-full">
+        <div className="container max-w-lg mx-auto p-4">
           <Card className="border-gray-200 shadow-2xl rounded-2xl bg-gradient-to-r from-blue-50 to-blue-100">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold">Login an Account</CardTitle>
+              <CardTitle className="text-2xl font-bold">
+                Login an Account
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" placeholder="name@example.com" value={formData.email} onChange={handleChange} required />
+                  <Input
+                    className="border-1 border-gray-400"
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="name@example.com"
+                    value={input.email}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
 
                 <div className="space-y-2 relative">
                   <Label htmlFor="password">Password</Label>
-                  <Input id="password" name="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={formData.password} onChange={handleChange} required />
-                  <button type="button" className="absolute right-3 top-9" onClick={togglePassword}>
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
+                  <Input
+                    className="border-1 border-gray-400"
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={input.password}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="accountType">I am a</Label>
-                  <select id="accountType" name="accountType" value={formData.accountType} onChange={handleChange} className="w-full h-10 px-3 rounded-md border bg-background text-sm">
-                    <option value="jobseeker">Job Seeker</option>
-                    <option value="recruiter">Recruiter</option>
-                  </select>
+                  <RadioGroup className="flex item-center gap-4">
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        type="radio"
+                        name="role"
+                        value="student"
+                        checked={input.role === "student"}
+                        className="cursor-pointer md:w-[20px]"
+                        onChange={handleChange}
+                      />
+                      <Label htmlFor="r1">Student</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        type="radio"
+                        name="role"
+                        value="recruiter"
+                        checked={input.role === "recruiter"}
+                        className="cursor-pointer md:w-[20px]"
+                        onChange={handleChange}
+                      />
+                      <Label htmlFor="r2">Recruiter</Label>
+                    </div>
+                  </RadioGroup>
                 </div>
-
-                <Button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white">
-                  Login
-                </Button>
+                {loading ? (
+                  <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white cursor-pointer">
+                    <span className="mr-2">Loading...</span>
+                    <Loader />
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="w-full bg-blue-700 hover:bg-blue-800 text-white cursor-pointer"
+                  >
+                    Login
+                  </Button>
+                )}
 
                 <div className="mt-6 text-center">
                   <p className="text-sm text-gray-600">
-                    Don't have an account? <Link to="/signup" className="text-blue-600 hover:underline">Sign Up</Link>
+                    Don't have an account?{" "}
+                    <Link
+                      to="/signup"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Sign Up
+                    </Link>
                   </p>
                 </div>
               </form>
@@ -76,5 +154,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }

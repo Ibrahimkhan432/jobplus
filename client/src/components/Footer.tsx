@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 ">
               <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-2 rounded-lg">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+        <div className="mt-4 border-t border-gray-800 text-center text-gray-400">
           <p>© {new Date().getFullYear()} Job Plus. All rights reserved.</p>
         </div>
       </div>
