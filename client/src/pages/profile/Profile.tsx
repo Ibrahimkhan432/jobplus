@@ -11,6 +11,7 @@ const isApplied = true;
 function Profile() {
   const [open, setOpen] = React.useState(false);
   const { user } = useSelector((store: any) => store.auth);
+console.log("user",user);
 
   return (
     <div>

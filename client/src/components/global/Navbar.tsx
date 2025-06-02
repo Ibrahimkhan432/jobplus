@@ -208,8 +208,9 @@ export default function Navbar() {
                           {user.fullName}
                         </span>
                         <span className="text-xs text-blue-100">
-                          Professional Account
-                        </span>
+{
+  user?.profile?.bio
+}                        </span>
                       </div>
                     </div>
                   </div>
