@@ -4,13 +4,12 @@ import { Avatar, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { useNavigate } from 'react-router-dom';
 
-const Job = () => {
-  const navigate = useNavigate();
-  const jobId = "lsekdhjgdsnfvsdkjf";
 
+const Job = ({ job }: any) => {
+  console.log("job", job);
+  const navigate = useNavigate();
   return (
     <div className="p-6 rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition duration-200">
-      {/* Top Row: Time + Bookmark */}
       <div className="flex items-center justify-between mb-4">
         <p className="text-sm text-gray-500">2 days ago</p>
         <Button variant="outline" size="icon" className="rounded-full">
@@ -18,36 +17,33 @@ const Job = () => {
         </Button>
       </div>
 
-      {/* Company Info */}
       <div className="flex items-center gap-4 mb-4">
         <Avatar className="w-12 h-12">
           <AvatarImage src="https://via.placeholder.com/48" />
         </Avatar>
         <div>
-          <h2 className="font-semibold text-gray-800 text-base">Company Name</h2>
-          <p className="text-sm text-gray-500">India</p>
+          <h2 className="font-semibold text-gray-800 text-base">{job?.company?.name}</h2>
+          <p className="text-sm text-gray-500">{job?.location}</p>
         </div>
       </div>
 
-      {/* Job Title + Description */}
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-gray-800 w-3/4">Frontend Developer</h3>
+        <h3 className="text-lg font-bold text-gray-800 w-3/4">{job?.title}</h3>
         <p className="text-sm text-gray-600 mt-1">
-          We're looking for a skilled frontend developer familiar with React, Tailwind, and modern UI practices.
+          {job?.description}
         </p>
       </div>
 
-      {/* Badges */}
       <div className="flex flex-wrap gap-2 mt-2">
-        <Badge className="bg-blue-100 text-blue-700 font-medium">2 Positions</Badge>
-        <Badge className="bg-red-100 text-red-600 font-medium">Part Time</Badge>
-        <Badge className="bg-purple-100 text-purple-700 font-medium">50k/month</Badge>
+        <Badge className="bg-blue-100 text-blue-700 font-medium">{job?.posioton}</Badge>
+        <Badge className="bg-red-100 text-red-600 font-medium">{job?.jobType}</Badge>
+        <Badge className="bg-purple-100 text-purple-700 font-medium">{job?.salary}</Badge>
       </div>
 
       {/* Action Buttons */}
       <div className="flex items-center gap-3 mt-6">
         <Button
-          onClick={() => navigate(`/description/${jobId}`)}
+          onClick={() => navigate(`/description/${job?._id}`)}
           variant="outline"
           className="text-sm font-medium cursor-pointer text-gray-700 hover:bg-gray-100 border border-gray-300 rounded-lg px-4 py-2"
         >
