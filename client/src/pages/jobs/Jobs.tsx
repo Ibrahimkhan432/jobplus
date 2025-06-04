@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 function Jobs() {
   const { allJobs } = useSelector((store: any) => store.job)
-  console.log("allJobs", allJobs);
+  // console.log("allJobs", allJobs);
 
   return (
     <div>

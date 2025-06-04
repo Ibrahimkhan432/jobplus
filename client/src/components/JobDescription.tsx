@@ -1,28 +1,74 @@
+import { useParams } from "react-router-dom";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-
-const isApplied = false;
+import { useEffect } from "react";
+import axios from "axios";
+import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { setSingleJob } from "../../redux/jobSlice";
+import { toast } from "sonner";
 
 function JobDescription() {
+  const params = useParams();
+  const jobId = params.id;
+  const { user } = useSelector((store: any) => store.auth);
+  const { singleJob } = useSelector((store: any) => store.job);
+  console.log("singleJob", singleJob);
+  const dispatch = useDispatch();
+
+  const applications = singleJob?.applications;
+  const isApplied = applications?.some((application: any) => application.applicant.toString() === user?._id) || false;
+
+
+  const applyJobHandler = async () => {
+    try {
+      const res = await axios.post(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {
+        withCredentials: true,
+
+      });
+      console.log("res", res);
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log("error in apply job", error);
+    }
+  }
+
+  useEffect(() => {
+    const fetchSingleJob = async () => {
+      try {
+        const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
+          withCredentials: true,
+        });
+        if (res.data.success) {
+          dispatch(setSingleJob(res.data.job));
+        }
+      } catch (error) {
+        console.log("error in get single job", error);
+      }
+    };
+    fetchSingleJob();
+  }, [dispatch, jobId, user?._id]);
+
   return (
     <div className="my-10 max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-md border border-gray-200">
       {/* Top Section: Role & Apply Button */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Frontend Developer</h1>
-          <p className="text-sm text-gray-500 mt-1">Location: Karachi, Pakistan</p>
+          <h1 className="text-2xl font-bold text-gray-800">{singleJob?.title}</h1>
+          <p className="text-sm text-gray-500 mt-1">{singleJob?.location}</p>
           <div className="flex flex-wrap gap-2 mt-3">
-            <Badge className="text-white font-medium bg-blue-600">Experience: 1-2 Years</Badge>
-            <Badge className="text-white font-medium bg-purple-600">PKR 50,000/month</Badge>
-            <Badge className="text-white font-medium bg-green-600">Part Time</Badge>
+            <Badge className="text-white font-medium bg-blue-600">Experience: {singleJob?.experience}</Badge>
+            <Badge className="text-white font-medium bg-purple-600">{singleJob?.salary}</Badge>
+            <Badge className="text-white font-medium bg-green-600">{singleJob?.jobType}</Badge>
           </div>
         </div>
-
         <Button
+          onClick={applyJobHandler}
           disabled={isApplied}
-          className={`mt-2 sm:mt-0 bgMain-gradient text-white cursor-pointer font-semibold px-6 ${
-            isApplied ? "opacity-60 cursor-not-allowed" : "hover:opacity-90"
-          }`}
+          className={`mt-2 sm:mt-0 bgMain-gradient text-white cursor-pointer font-semibold px-6 ${isApplied ? "opacity-60 cursor-not-allowed" : "hover:opacity-90"
+            }`}
         >
           {isApplied ? "Applied" : "Apply Now"}
         </Button>
@@ -31,21 +77,20 @@ function JobDescription() {
       {/* Meta Info */}
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
         <div>
-          <span className="font-medium">Total Applications:</span> 24
+          <span className="font-medium">Total Applicants:</span>
+          {singleJob?.applications?.length}
         </div>
         <div>
-          <span className="font-medium">Posted Date:</span> 20 May 2025
+          <span className="font-medium">Posted Date:</span> {singleJob?.createdAt.split("T")[0]}
         </div>
       </div>
 
       {/* Description */}
       <div className="mt-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-2">Job Description</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-2">Description</h2>
         <hr className="mb-4 border-gray-300" />
         <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-          We are looking for a motivated and creative Frontend Developer to join our team. You will be responsible
-          for creating engaging and responsive user interfaces. The ideal candidate should have experience working
-          with modern frameworks such as React.js, and a solid understanding of frontend best practices.
+          {singleJob?.description}
         </p>
 
         <ul className="list-disc list-inside mt-4 text-gray-600 space-y-1 text-sm sm:text-base">
