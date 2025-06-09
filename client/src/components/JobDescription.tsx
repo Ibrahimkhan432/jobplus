@@ -17,23 +17,34 @@ function JobDescription() {
   const dispatch = useDispatch();
 
   const applications = singleJob?.applications;
-  const isApplied = applications?.some((application: any) => application.applicant.toString() === user?._id) || false;
-
-
+  const isApplied =
+    applications?.some(
+      (application: any) => application.applicant === user?._id
+    ) || false;
   const applyJobHandler = async () => {
     try {
-      const res = await axios.post(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {
-        withCredentials: true,
-
-      });
-      console.log("res", res);
+      const res = await axios.get(
+        `${APPLICATION_API_END_POINT}/apply/${jobId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("res", res.data);
       if (res.data.success) {
         toast.success(res.data.message);
+        // Refresh job data
+        const jobRes = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
+          withCredentials: true,
+        });
+        if (jobRes.data.success) {
+          dispatch(setSingleJob(jobRes.data.job));
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log("error in apply job", error);
+      toast.error(error.response?.data?.message || "Failed to apply for job");
     }
-  }
+  };
 
   useEffect(() => {
     const fetchSingleJob = async () => {
@@ -56,19 +67,28 @@ function JobDescription() {
       {/* Top Section: Role & Apply Button */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">{singleJob?.title}</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            {singleJob?.title}
+          </h1>
           <p className="text-sm text-gray-500 mt-1">{singleJob?.location}</p>
           <div className="flex flex-wrap gap-2 mt-3">
-            <Badge className="text-white font-medium bg-blue-600">Experience: {singleJob?.experience}</Badge>
-            <Badge className="text-white font-medium bg-purple-600">{singleJob?.salary}</Badge>
-            <Badge className="text-white font-medium bg-green-600">{singleJob?.jobType}</Badge>
+            <Badge className="text-white font-medium bg-blue-600">
+              Experience: {singleJob?.experience}
+            </Badge>
+            <Badge className="text-white font-medium bg-purple-600">
+              {singleJob?.salary}
+            </Badge>
+            <Badge className="text-white font-medium bg-green-600">
+              {singleJob?.jobType}
+            </Badge>
           </div>
         </div>
         <Button
           onClick={applyJobHandler}
           disabled={isApplied}
-          className={`mt-2 sm:mt-0 bgMain-gradient text-white cursor-pointer font-semibold px-6 ${isApplied ? "opacity-60 cursor-not-allowed" : "hover:opacity-90"
-            }`}
+          className={`mt-2 sm:mt-0 bgMain-gradient text-white cursor-pointer font-semibold px-6 ${
+            isApplied ? "opacity-60 cursor-not-allowed" : "hover:opacity-90"
+          }`}
         >
           {isApplied ? "Applied" : "Apply Now"}
         </Button>
@@ -81,22 +101,33 @@ function JobDescription() {
           {singleJob?.applications?.length}
         </div>
         <div>
-          <span className="font-medium">Posted Date:</span> {singleJob?.createdAt.split("T")[0]}
+          <span className="font-medium">Posted Date:</span>{" "}
+          {singleJob?.createdAt.split("T")[0]}
         </div>
       </div>
 
       {/* Description */}
       <div className="mt-6">
-        <h2 className="text-lg font-semibold text-gray-700 mb-2">Description</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-2">
+          Description
+        </h2>
         <hr className="mb-4 border-gray-300" />
         <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
           {singleJob?.description}
         </p>
 
         <ul className="list-disc list-inside mt-4 text-gray-600 space-y-1 text-sm sm:text-base">
-          <li>Collaborate with designers to translate Figma mockups into working UI</li>
-          <li>Write clean, maintainable, and efficient code using React and TailwindCSS</li>
-          <li>Ensure application responsiveness and performance across devices</li>
+          <li>
+            Collaborate with designers to translate Figma mockups into working
+            UI
+          </li>
+          <li>
+            Write clean, maintainable, and efficient code using React and
+            TailwindCSS
+          </li>
+          <li>
+            Ensure application responsiveness and performance across devices
+          </li>
           <li>Participate in regular code reviews and agile team activities</li>
           <li>Good understanding of Git and deployment workflows</li>
         </ul>
