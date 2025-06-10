@@ -11,7 +11,7 @@ const isApplied = true;
 function Profile() {
   const [open, setOpen] = React.useState(false);
   const { user } = useSelector((store: any) => store.auth);
-console.log("user",user);
+  console.log("user", user);
 
   return (
     <div>
@@ -87,14 +87,20 @@ console.log("user",user);
           )}
         </div>
       </div>
-      <div className="max-w-4xl mx-auto mt-2 px-6 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm space-y-4">
-        <h1 className="font-semibold">Applied Jobs</h1>
-        {isApplied ? (
-          <AppliedJobTable />
-        ) : (
-          <span className="text-gray-500 mt-2">No applied jobs</span>
-        )}
-      </div>
+      {
+        user && user.role === "student" && (
+          <div className="max-w-4xl mx-auto mt-2 px-6 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm space-y-4">
+            <h1 className="font-semibold">Applied Jobs</h1>
+            {isApplied ? (
+              <AppliedJobTable />
+            ) : (
+              <span className="text-gray-500 mt-2">No applied jobs</span>
+            )}
+          </div>
+        )
+
+      }
+
       <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>
   );

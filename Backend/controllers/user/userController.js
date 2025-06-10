@@ -1,9 +1,9 @@
 import User from "../../models/userSchema/userSchema.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-// import cloudinary from "cloudinary";
 import getDataUri from "../../utils/dataUri.js";
 import cloudinary from "../../utils/cloudinary.js";
+
 // reigster user first time
 export const register = async (req, res) => {
   try {

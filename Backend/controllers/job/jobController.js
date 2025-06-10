@@ -17,14 +17,14 @@ export const postJob = async (req, res) => {
 
     if (
       (!title,
-      !description,
-      !salary,  
-      !location,
-      !requirement,
-      !position,
-      !jobType,
-      !companyId,
-      !experience)
+        !description,
+        !salary,
+        !location,
+        !requirement,
+        !position,
+        !jobType,
+        !companyId,
+        !experience)
     ) {
       res.status(404).json({
         message: "Please fill all fields",
@@ -64,8 +64,8 @@ export const getAllJobs = async (req, res) => {
       ],
     };
     const jobs = await Job.find(query).populate({
-      path:"company"
-    }).sort({createdAt:-1});
+      path: "company"
+    }).sort({ createdAt: -1 });
     if (!jobs) {
       res.status(404).json({
         message: "jobs not found",
@@ -84,7 +84,9 @@ export const getAllJobs = async (req, res) => {
 export const getJobById = async (req, res) => {
   try {
     const jobId = req.params.id;
-    const job = await Job.findById(jobId);
+    const job = await Job.findById(jobId).populate({
+      path: "applications"
+    });
     if (!job) {
       return res.status(404).json({
         mssage: "job not found",

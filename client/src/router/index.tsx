@@ -6,6 +6,9 @@ import Jobs from "@/pages/jobs/Jobs";
 import Browser from "@/components/Browser";
 import Profile from "@/pages/profile/Profile";
 import JobDescription from "@/components/JobDescription";
+import Companies from "@/pages/admin/Companies";
+import CreateCompany from "@/pages/admin/CreateCompany";
+import CompanySetup from "@/pages/admin/CompanySetup";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -15,5 +18,11 @@ const router = createBrowserRouter([
   { path: "/description/:id", element: <JobDescription /> },
   { path: "/browser", element: <Browser /> },
   { path: "/profile", element: <Profile /> },
+  
+  // Admin
+  { path: "/admin/companies", element: <Companies /> },
+  { path: "/admin/companies/create", element: <CreateCompany /> },
+  { path: "/admin/companies/:id", element: <CompanySetup /> },
 ]);
+
 export default router;

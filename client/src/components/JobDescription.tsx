@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,28 +17,23 @@ function JobDescription() {
   const dispatch = useDispatch();
 
   const applications = singleJob?.applications;
-  const isApplied =
+  const isInitiallyApplied =
     applications?.some(
       (application: any) => application.applicant === user?._id
     ) || false;
+
+  const [isApplied, setIsApplied] = useState(isInitiallyApplied)
+
   const applyJobHandler = async () => {
     try {
-      const res = await axios.get(
-        `${APPLICATION_API_END_POINT}/apply/${jobId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("res", res.data);
+      const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
+        withCredentials: true,
+      });
       if (res.data.success) {
-        toast.success(res.data.message);
-        // Refresh job data
-        const jobRes = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
-          withCredentials: true,
-        });
-        if (jobRes.data.success) {
-          dispatch(setSingleJob(jobRes.data.job));
-        }
+        setIsApplied(true)
+        const updatedSingleJob = { ...singleJob, application: [...singleJob.applications, { applicant: user?._id }] }
+        dispatch(setSingleJob(updatedSingleJob))
+        toast.success("applied successfully")
       }
     } catch (error: any) {
       console.log("error in apply job", error);
@@ -54,6 +49,7 @@ function JobDescription() {
         });
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job));
+          setIsApplied(res.data.job.applications.some((application: any) => application.applicant === user?._id))
         }
       } catch (error) {
         console.log("error in get single job", error);
@@ -86,9 +82,8 @@ function JobDescription() {
         <Button
           onClick={applyJobHandler}
           disabled={isApplied}
-          className={`mt-2 sm:mt-0 bgMain-gradient text-white cursor-pointer font-semibold px-6 ${
-            isApplied ? "opacity-60 cursor-not-allowed" : "hover:opacity-90"
-          }`}
+          className={`mt-2 sm:mt-0 bgMain-gradient text-white cursor-pointer font-semibold px-6 ${isApplied ? "opacity-60 cursor-not-allowed" : "hover:opacity-90"
+            }`}
         >
           {isApplied ? "Applied" : "Apply Now"}
         </Button>
@@ -97,7 +92,7 @@ function JobDescription() {
       {/* Meta Info */}
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
         <div>
-          <span className="font-medium">Total Applicants:</span>
+          <span className="font-medium">Total Applicants: </span>
           {singleJob?.applications?.length}
         </div>
         <div>

@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { USER_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
-import {setUser} from "../../../redux/authSlice"
+import { setUser } from "../../../redux/authSlice"
 export default function Navbar() {
   const { user } = useSelector((store: any) => store.auth);
   const [isOpen, setIsOpen] = useState(false);
@@ -38,12 +38,12 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    
+
     try {
       const res = await axios.get(`${USER_API_END_POINT}/Logout`, {
         withCredentials: true,
       });
-      if(res.data.success){
+      if (res.data.success) {
         dispatch(setUser(null));
         navigate("/");
         toast.success(res.data.message);
@@ -55,19 +55,17 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-gradient-to-r from-blue-200 to-blue-100  shadow-md"
-          : "bg-transparent"
-      }`}
+      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
+        ? "bg-gradient-to-r from-blue-200 to-blue-100  shadow-md"
+        : "bg-transparent"
+        }`}
     >
       <div className="flex h-16  items-center lg:px-20 md:px-20 container mx-auto">
         <div className="flex items-center mr-6">
           <Link to="/" className="flex items-center gap-2">
             <div
-              className={`bgMain-gradient p-2 rounded-lg shadow-md ${
-                scrolled ? "" : ""
-              }`}
+              className={`bgMain-gradient p-2 rounded-lg shadow-md ${scrolled ? "" : ""
+                }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -87,18 +85,16 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col ">
               <span
-                className={`text-xl font-extrabold w-[90px] ${
-                  scrolled
-                    ? "text-blue-600"
-                    : "bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100"
-                }`}
+                className={`text-xl font-extrabold w-[90px] ${scrolled
+                  ? "text-blue-600"
+                  : "bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100"
+                  }`}
               >
                 Job Plus
               </span>
               <span
-                className={`text-xs font-medium -mt-1 ${
-                  scrolled ? "text-blue-500" : "text-blue-100"
-                }`}
+                className={`text-xs font-medium -mt-1 ${scrolled ? "text-blue-500" : "text-blue-100"
+                  }`}
               >
                 Find Your Dream Career
               </span>
@@ -109,34 +105,56 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-1">
           <Link
             to="/"
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              scrolled
-                ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
-                : "hover:bg-white/20 hover:text-white text-white"
-            }`}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+              ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+              : "hover:bg-white/20 hover:text-white text-white"
+              }`}
           >
             Home
           </Link>
-          <Link
-            to="/jobs"
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              scrolled
-                ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
-                : "hover:bg-white/20 hover:text-white text-white"
-            }`}
-          >
-            Jobs
-          </Link>
-          <Link
-            to="/browser"
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              scrolled
-                ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
-                : "hover:bg-white/20 hover:text-white text-white"
-            }`}
-          >
-            Browser
-          </Link>
+          {user?.role === "recruiter" ? (
+            <>
+              <Link
+                to="/admin/companies"
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                  : "hover:bg-white/20 hover:text-white text-white"
+                  }`}
+              >
+                Companies
+              </Link>
+              <Link
+                to="/admin/jobs"
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                  : "hover:bg-white/20 hover:text-white text-white"
+                  }`}
+              >
+                Jobs
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/jobs"
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                  : "hover:bg-white/20 hover:text-white text-white"
+                  }`}
+              >
+                Jobs
+              </Link>
+              <Link
+                to="/browser"
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                  : "hover:bg-white/20 hover:text-white text-white"
+                  }`}
+              >
+                Browser
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="flex-1 md:flex-none md:w-auto flex justify-end md:justify-start ml-4">
@@ -171,11 +189,10 @@ export default function Navbar() {
                 <PopoverTrigger asChild>
                   <Button
                     variant="ghost"
-                    className={`relative h-10 w-10 rounded-full p-0 overflow-hidden ${
-                      scrolled
-                        ? "border-2 border-blue-200 hover:border-blue-400"
-                        : "border-2 border-white/30 hover:border-white/60"
-                    }`}
+                    className={`relative h-10 w-10 rounded-full p-0 overflow-hidden ${scrolled
+                      ? "border-2 border-blue-200 hover:border-blue-400"
+                      : "border-2 border-white/30 hover:border-white/60"
+                      }`}
                   >
                     <Avatar className="h-full w-full cursor-pointer">
                       <AvatarImage
@@ -208,9 +225,9 @@ export default function Navbar() {
                           {user.fullName}
                         </span>
                         <span className="text-xs text-blue-100">
-{
-  user?.profile?.bio
-}                        </span>
+                          {
+                            user?.profile?.bio
+                          }                        </span>
                       </div>
                     </div>
                   </div>
@@ -247,11 +264,10 @@ export default function Navbar() {
               <Link to="/login">
                 <Button
                   variant="ghost"
-                  className={`border cursor-pointer ${
-                    scrolled
-                      ? "bg-white text-blue-600 hover:bg-blue-50 border-blue-200"
-                      : "text-white hover:bg-white/20 border-white/30"
-                  }`}
+                  className={`border cursor-pointer ${scrolled
+                    ? "bg-white text-blue-600 hover:bg-blue-50 border-blue-200"
+                    : "text-white hover:bg-white/20 border-white/30"
+                    }`}
                 >
                   Login
                 </Button>
@@ -259,11 +275,10 @@ export default function Navbar() {
               <Link to="/signup">
                 <Button
                   variant="ghost"
-                  className={`border cursor-pointer ${
-                    scrolled
-                      ? "bg-white text-blue-600 hover:bg-blue-50 border-blue-200"
-                      : "text-white hover:bg-white/20 border-white/30"
-                  }`}
+                  className={`border cursor-pointer ${scrolled
+                    ? "bg-white text-blue-600 hover:bg-blue-50 border-blue-200"
+                    : "text-white hover:bg-white/20 border-white/30"
+                    }`}
                 >
                   Sign Up
                 </Button>
@@ -289,57 +304,78 @@ export default function Navbar() {
       {/* Mobile menu */}
       {isOpen && (
         <div
-          className={`md:hidden px-4 pb-4 pt-2 border-t ${
-            scrolled ? "bg-white shadow-lg" : "bg-white/10 backdrop-blur-md"
-          }`}
+          className={`md:hidden px-4 pb-4 pt-2 border-t ${scrolled ? "bg-white shadow-lg" : "bg-white/10 backdrop-blur-md"
+            }`}
         >
           <div className="flex flex-col space-y-2">
             <Link
               to="/"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                scrolled
-                  ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
-                  : "hover:bg-white/20 text-white"
-              }`}
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
+                : "hover:bg-white/20 text-white"
+                }`}
               onClick={() => setIsOpen(false)}
             >
               Home
             </Link>
-            <Link
-              to="/jobs"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                scrolled
-                  ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
-                  : "hover:bg-white/20 text-white"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              Jobs
-            </Link>
-            <Link
-              to="/browser"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                scrolled
-                  ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
-                  : "hover:bg-white/20 text-white"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              Browser
-            </Link>
+            {user?.role === "recruiter" ? (
+              <>
+                <Link
+                  to="/companies"
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                    ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
+                    : "hover:bg-white/20 text-white"
+                    }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Companies
+                </Link>
+                <Link
+                  to="/my-jobs"
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                    ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
+                    : "hover:bg-white/20 text-white"
+                    }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  My Jobs
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/jobs"
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                    ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
+                    : "hover:bg-white/20 text-white"
+                    }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Jobs
+                </Link>
+                <Link
+                  to="/browser"
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                    ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700"
+                    : "hover:bg-white/20 text-white"
+                    }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Browser
+                </Link>
+              </>
+            )}
             {!user && (
               <div
-                className={`pt-2 mt-2 border-t ${
-                  scrolled ? "border-gray-100" : "border-white/10"
-                } flex flex-col space-y-2`}
+                className={`pt-2 mt-2 border-t ${scrolled ? "border-gray-100" : "border-white/10"
+                  } flex flex-col space-y-2`}
               >
                 <Link
                   to="/login"
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    scrolled
-                      ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700 bg-white"
-                      : "hover:bg-white text-white"
-                  }`}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
+                    ? "hover:bg-blue-50 hover:text-blue-600 text-gray-700 bg-white"
+                    : "hover:bg-white text-white"
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   Login
