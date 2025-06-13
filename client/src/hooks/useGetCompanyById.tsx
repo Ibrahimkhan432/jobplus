@@ -12,13 +12,13 @@ const useGetCompanyById = (companyId: string) => {
   useEffect(() => {
     const fetchSingleCompany = async () => {
       if (!companyId) return;
-      
+
       try {
         setLoading(true);
         const res = await axios.post(`${COMPANY_API_END_POINT}/get/${companyId}`, {}, {
           withCredentials: true,
         });
-        
+
         if (res.data.success) {
           dispatch(setSingleCompany(res.data.company));
         } else {

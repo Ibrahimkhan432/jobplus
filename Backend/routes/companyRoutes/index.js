@@ -9,7 +9,7 @@ import {
 } from "../../controllers/company/companyController.js";
 const router = express.Router();
 router.post("/register", isAuthenticated, registerCompany);
-router.post("/get", isAuthenticated, getCompany);
+router.get("/get", isAuthenticated, getCompany);
 router.post("/get/:id", isAuthenticated, getCompanyById);
 router.put("/update/:id",singleUpload, isAuthenticated, updateCompany);
 
