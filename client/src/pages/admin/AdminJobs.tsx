@@ -1,7 +1,6 @@
 import Navbar from "@/components/global/Navbar"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react";
 import { setSearchJobByName } from "../../../redux/jobSlice";
 import { useDispatch, useSelector } from "react-redux";
 import AdminJobTable from "@/components/admin/AdminJobTable";
@@ -33,7 +32,7 @@ function AdminJobs() {
                     <Button
                         onClick={() => navigate("/admin/jobs/create")}
                         className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 cursor-pointer">
-                        Post New Job
+                        Create Job
                     </Button>
                 </div>
                 <AdminJobTable />

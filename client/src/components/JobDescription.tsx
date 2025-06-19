@@ -9,24 +9,29 @@ import { setSingleJob } from "../../redux/jobSlice";
 import { toast } from "sonner";
 
 function JobDescription() {
+
   const params = useParams();
   const jobId = params.id;
+  const dispatch = useDispatch();
+
+
   const { user } = useSelector((store: any) => store.auth);
   const { singleJob } = useSelector((store: any) => store.job);
-  console.log("singleJob", singleJob);
-  const dispatch = useDispatch();
 
   const applications = singleJob?.applications;
   const isInitiallyApplied =
     applications?.some(
-      (application: any) => application.applicant === user?._id
+      (application: any) =>
+        (typeof application.applicant === "string"
+          ? application.applicant
+          : application.applicant?._id) === user?._id
     ) || false;
 
   const [isApplied, setIsApplied] = useState(isInitiallyApplied)
 
   const applyJobHandler = async () => {
     try {
-      const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
+      const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {
         withCredentials: true,
       });
       if (res.data.success) {
@@ -49,7 +54,12 @@ function JobDescription() {
         });
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job));
-          setIsApplied(res.data.job.applications.some((application: any) => application.applicant === user?._id))
+          res.data.job.applications.some(
+            (application: any) =>
+              (typeof application.applicant === "string"
+                ? application.applicant
+                : application.applicant?._id) === user?._id
+          )
         }
       } catch (error) {
         console.log("error in get single job", error);
