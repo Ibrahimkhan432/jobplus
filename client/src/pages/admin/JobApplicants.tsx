@@ -33,7 +33,7 @@ const JobApplicants = () => {
         const res = await axios.get(`${APPLICATION_API_END_POINT}/${params.id}/applicants`, {
           withCredentials: true,
         });
-        console.log("response to fetchAll APplicants", res);
+        // console.log("response to fetchAll APplicants", res);
 
         dispatch(setAllApplicants(res.data.job));
         setJobTitle(res.data.job.title || "");

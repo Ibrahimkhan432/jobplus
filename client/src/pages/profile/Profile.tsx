@@ -6,9 +6,11 @@ import { Contact, Mail, Pen } from "lucide-react";
 import React from "react";
 import UpdateProfileDialog from "../../components/UpdateProfileDialog";
 import { useSelector } from "react-redux";
+import useGetAppliedJobs from "../../hooks/useGetAppliedJobs";
 const isResume = true;
 const isApplied = true;
 function Profile() {
+  useGetAppliedJobs();
   const [open, setOpen] = React.useState(false);
   const { user } = useSelector((store: any) => store.auth);
   console.log("user", user);

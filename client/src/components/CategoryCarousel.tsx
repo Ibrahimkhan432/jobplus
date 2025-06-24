@@ -16,15 +16,17 @@ import {
   CheckCircle,
   Shield,
   Cloud,
-    Link as LinkIcon,
+  Link as LinkIcon,
 } from "lucide-react"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 interface Category {
   id: string
   name: string
   icon: React.ReactNode
   count: number
 }
+import { useNavigate } from "react-router-dom";
+
 
 export default function CategoryCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -76,6 +78,15 @@ export default function CategoryCarousel() {
     }
   }
 
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryId: string) => {
+    navigate(`/browser?category=${categoryId}`);
+  };
+
+
+
+
   return (
     <div className="relative w-full max-w-6xl mx-auto px-4 mt-8 ">
       <div className="flex items-center justify-between mb-4">
@@ -84,9 +95,8 @@ export default function CategoryCarousel() {
           <Button
             variant="outline"
             size="icon"
-            className={`rounded-full bg-white/20 text-white border-white/40 hover:bg-white/30 ${
-              !canScrollLeft ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`rounded-full bg-white/20 text-white border-white/40 hover:bg-white/30 ${!canScrollLeft ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
           >
@@ -96,9 +106,8 @@ export default function CategoryCarousel() {
           <Button
             variant="outline"
             size="icon"
-            className={`rounded-full bg-white/20 text-white border-white/40 hover:bg-white/30 ${
-              !canScrollRight ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`rounded-full bg-white/20 text-white border-white/40 hover:bg-white/30 ${!canScrollRight ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
           >

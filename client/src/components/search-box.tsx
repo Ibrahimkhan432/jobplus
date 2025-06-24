@@ -6,16 +6,24 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, MapPin, Briefcase } from "lucide-react"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { setSearchedQuery } from "../../redux/jobSlice"
 
 export default function SearchBox() {
   const [query, setQuery] = useState("")
   const [location, setLocation] = useState("")
   const [category, setCategory] = useState("")
 
+const dispatch = useDispatch();
+const navigate = useNavigate();
+
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     console.log("Searching for:", { query, location, category })
-    // Implement search functionality
+    dispatch(setSearchedQuery(query));
+    navigate("/browser")
   }
 
   return (

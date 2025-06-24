@@ -61,7 +61,7 @@ export const applyJob = async (req, res) => {
 };
 
 export const getAppliedJobs = async (req, res) => {
-  const userId = jobId;
+  const userId = req.id;
   const application = await Application.find({
     applicant: userId,
   })
@@ -76,10 +76,14 @@ export const getAppliedJobs = async (req, res) => {
     });
   if (!application) {
     return res.status(400).json({
-      message: "Job not found",
+      message: "No Application found",
       success: false,
     });
   }
+  return res.status(200).json({
+    success: true,
+    application,
+  });
 };
 
 // admin see all applications
