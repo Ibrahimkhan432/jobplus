@@ -27,6 +27,7 @@ const Job = ({ job }: any) => {
                 : `${daysAgoFunction(job?.createdAt)} days ago`
           }
 
+
         </p>
         <Button variant="outline" size="icon" className="rounded-full">
           <Bookmark className="w-4 h-4" />
