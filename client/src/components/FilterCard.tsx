@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 const filterData = [
@@ -32,7 +33,20 @@ const filterData = [
   },
 ];
 
+
+
 function FilterCard() {
+
+  const [selectedValue, setSelectedValue] = useState();
+
+  const changeHandler = (value: any) => {
+    setSelectedValue(value);
+  }
+
+useEffect(() => {
+console.log(selectedValue)
+}, [selectedValue])
+
   return (
     <div className="border border-gray-300 rounded-lg shadow-md overflow-hidden">
       {/* Top Gradient */}
@@ -43,7 +57,10 @@ function FilterCard() {
         <h2 className="text-xl font-bold text-gray-800 mb-2">Filter Jobs</h2>
         <hr className="mb-4" />
 
-        <RadioGroup>
+        <RadioGroup
+        onValueChange={changeHandler}
+        value={selectedValue}
+        >
           {filterData.map((data, index) => (
             <div key={index} className="mb-6">
               <h3 className="font-semibold text-lg text-gray-700 mb-2">
