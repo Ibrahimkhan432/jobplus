@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-footer text-white py-12 md:p-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -86,9 +86,9 @@ export default function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4">Contact Us</h3>
             <ul className="space-y-2">
-              <li className="text-gray-400">Email: info@jobplus.com</li>
-              <li className="text-gray-400">Phone: +1 (555) 123-4567</li>
-              <li className="text-gray-400">Address: 123 Job Street, Career City</li>
+              <li className="text-gray-400">Email: ibrahimsheikh772@gmail.com</li>
+              <li className="text-gray-400">Phone: +923431223329</li>
+              <li className="text-gray-400">Address: Zaitoon Ashraf IT Park</li>
             </ul>
             <div className="flex gap-4 mt-4">
               <Link to="#" className="text-gray-400 hover:text-white">

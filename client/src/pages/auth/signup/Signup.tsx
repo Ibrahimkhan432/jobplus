@@ -140,7 +140,7 @@ export default function Signup() {
                     className="border-1 border-gray-400"
                     id="phoneNumber"
                     name="phoneNumber"
-                    placeholder="1234567890"
+                    placeholder="+92123456789"
                     value={input.phoneNumber}
                     onChange={handleChange}
                     required

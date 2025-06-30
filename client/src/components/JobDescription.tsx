@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { setSingleJob } from "../../redux/jobSlice";
 import { toast } from "sonner";
 
 function JobDescription() {
+  const navigate = useNavigate();
 
   const params = useParams();
   const jobId = params.id;
@@ -43,6 +44,7 @@ function JobDescription() {
     } catch (error: any) {
       console.log("error in apply job", error);
       toast.error(error.response?.data?.message || "Failed to apply for job");
+      navigate("/login")
     }
   };
 

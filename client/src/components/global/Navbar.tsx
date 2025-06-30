@@ -55,16 +55,16 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
-        ? "bg-gradient-to-r from-blue-200 to-blue-100  shadow-md"
+      className={`sticky top-0 z-50 transition-all bgMain-gradient mb-4 duration-300 ${scrolled
+        ? "bg-gradient-to-r from-blue-200 to-blue-100  shadow-md "
         : "bg-transparent"
         }`}
     >
-      <div className="flex h-16  items-center lg:px-20 md:px-20 container mx-auto">
+      <div className="flex h-16 items-center lg:px-30 md:px-20 container mx-auto">
         <div className="flex items-center mr-6">
           <Link to="/" className="flex items-center gap-2">
             <div
-              className={`bgMain-gradient p-2 rounded-lg shadow-md ${scrolled ? "" : ""
+              className={`bgMain-gradient p-2 rounded-lg shadow-md  ${scrolled ? "" : ""
                 }`}
             >
               <svg
@@ -86,14 +86,14 @@ export default function Navbar() {
             <div className="flex flex-col ">
               <span
                 className={`text-xl font-extrabold w-[90px] ${scrolled
-                  ? "text-blue-600"
+                  ? "text-blue-600 text-white"
                   : "bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100"
                   }`}
               >
                 Job Plus
               </span>
               <span
-                className={`text-xs font-medium -mt-1 ${scrolled ? "text-blue-500" : "text-blue-100"
+                className={`text-xs font-medium -mt-1 ${scrolled ? "text-blue-500 text-white" : "text-blue-100"
                   }`}
               >
                 Find Your Dream Career
@@ -105,8 +105,8 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-1">
           <Link
             to="/"
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
-              ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+            className={`px-4 py-2 rounded-md text-md font-medium transition-colors ${scrolled
+              ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700 text-white"
               : "hover:bg-white/20 hover:text-white text-white"
               }`}
           >
@@ -117,7 +117,7 @@ export default function Navbar() {
               <Link
                 to="/admin/companies"
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
-                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700 text-white"
                   : "hover:bg-white/20 hover:text-white text-white"
                   }`}
               >
@@ -125,8 +125,8 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/admin/jobs"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
-                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                className={`px-4 py-2 rounded-md text-md font-medium transition-colors ${scrolled
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700 text-white"
                   : "hover:bg-white/20 hover:text-white text-white"
                   }`}
               >
@@ -137,8 +137,8 @@ export default function Navbar() {
             <>
               <Link
                 to="/jobs"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
-                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                className={`px-4 py-2 rounded-md text-md font-medium transition-colors ${scrolled
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700 text-white"
                   : "hover:bg-white/20 hover:text-white text-white"
                   }`}
               >
@@ -146,8 +146,8 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/browser"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${scrolled
-                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700"
+                className={`px-4 py-2 rounded-md text-md font-medium transition-colors ${scrolled
+                  ? "hover:bg-blue-50 hover:text-blue-600 text-blue-700 text-white"
                   : "hover:bg-white/20 hover:text-white text-white"
                   }`}
               >
@@ -167,7 +167,6 @@ export default function Navbar() {
                 : "text-white hover:bg-white/20"
             }
           >
-            <Search className="h-5 w-5" />
           </Button>
         </div>
 
@@ -264,10 +263,7 @@ export default function Navbar() {
               <Link to="/login">
                 <Button
                   variant="ghost"
-                  className={`border cursor-pointer ${scrolled
-                    ? "bg-white text-blue-600 hover:bg-blue-50 border-blue-200"
-                    : "text-white hover:bg-white/20 border-white/30"
-                    }`}
+                  className={`border-2 cursor-pointer text-white`}
                 >
                   Login
                 </Button>
@@ -275,10 +271,7 @@ export default function Navbar() {
               <Link to="/signup">
                 <Button
                   variant="ghost"
-                  className={`border cursor-pointer ${scrolled
-                    ? "bg-white text-blue-600 hover:bg-blue-50 border-blue-200"
-                    : "text-white hover:bg-white/20 border-white/30"
-                    }`}
+                  className={`border-none text-blue-600 cursor-pointer bg-white `}
                 >
                   Sign Up
                 </Button>

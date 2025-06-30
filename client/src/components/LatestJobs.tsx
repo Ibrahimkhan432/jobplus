@@ -80,7 +80,7 @@ function LatestJobs({job}: any) {
   // console.log("alljob", allJobs);
   return (
     <div>
-      <section className="px-20">
+      <section className="px-10">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-10">
             <div>
@@ -88,11 +88,11 @@ function LatestJobs({job}: any) {
               <p className="text-blue-600 mt-2">Explore our latest job opportunities</p>
             </div>
             <Link to="/jobs">
-              <Button className="bg-white text-blue-600 hover:bg-blue-50 border border-blue-200">View All Jobs</Button>
+              <Button className="bg-white text-blue-600 hover:bg-blue-50 border border-blue-200 cursor-pointer">View All Jobs</Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:p-10">
             {allJobs.length <= 0 ? (
               <div className="flex flex-col items-center justify-center w-full h-60 bg-white rounded-md shadow-md border border-gray-200">
                 <h1 className="text-2xl font-bold text-gray-800">

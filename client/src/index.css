@@ -11,6 +11,7 @@
 .bgMain-gradient { background: linear-gradient(to right, #2e4b9c, #4a82fa); }
 .border-primary { border-color: #BFDBFE; }
 .border-secondary { border-color: #93C5FD; }
+.bg-footer {  background: linear-gradient(to right, #163382, #1b4bb1);}
 
 /* Utility classes */
 .shadow-custom { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06); }

@@ -44,7 +44,7 @@ const Job = ({ job }: any) => {
       </div>
 
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-gray-800 w-3/4">{job?.title}</h3>
+        <h3 className="text-lg font-bold text-gray-800 w-full">{job?.title}</h3>
         <p className="text-sm text-gray-600 mt-1">
           {job?.description}
         </p>

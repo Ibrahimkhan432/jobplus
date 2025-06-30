@@ -121,7 +121,7 @@ export default function CategoryCarousel() {
         {categories.map((category) => (
           <Link key={category.id} to={`/jobs?category=${category.id}`} className="flex-shrink-0 snap-start">
             <div className="bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors rounded-xl p-2 w-[100px] md:w-[200px] flex flex-col items-center text-center border border-white/30 ">
-              <div className="bg-white/20 p-2 rounded-full mb-3">{category.icon}</div>
+              <div className="bg-white/20 p-2 text-white rounded-full mb-3">{category.icon}</div>
               <h3 className="font-medium text-white mb-1">{category.name}</h3>
               <p className="text-sm text-blue-100">{category.count} jobs</p>
             </div>
