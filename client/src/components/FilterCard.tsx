@@ -46,11 +46,11 @@ function FilterCard() {
 useEffect(() => {
 console.log(selectedValue)
 }, [selectedValue])
-
+  
   return (
     <div className="border border-gray-300 rounded-lg shadow-md overflow-hidden">
       {/* Top Gradient */}
-      <div className="h-2 w-full bg-gradient-to-r from-blue-500 to-purple-600" />
+      <div className="h-2 w-full bgMain-gradient" />
 
       {/* Filter Content */}
       <div className="p-4">

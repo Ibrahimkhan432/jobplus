@@ -74,7 +74,7 @@ const JobApplicants = () => {
           />
           <h1 className="text-2xl font-bold text-gray-900">
             Applicants for {jobTitle} 
-            <span>{applicants?.applications?.length}</span>
+            <span className="ml-2">{applicants?.applications?.length}</span>
           </h1>
         </div>
 

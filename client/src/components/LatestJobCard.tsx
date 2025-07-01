@@ -1,96 +1,116 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Bookmark, MapPin, Clock, DollarSign } from "lucide-react";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 interface JobData {
     _id: string;
     title: string;
-    company: { name: string } | null;
+    company: { name: string, logo: string } | null;
     location: string;
     salary: string;
     jobType: string;
     createdAt: string;
     description: string;
     position: number;
+    experience: string;
 }
 
 interface LatestJobCardProps {
     job: JobData;
 }
 
+const daysAgoFunction = (mongodbTime: any) => {
+    const createdAt = new Date(mongodbTime);
+    const daysAgo = Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
+    return daysAgo
+}
+
 const LatestJobCard: React.FC<LatestJobCardProps> = ({ job }) => {
-    // console.log("job", job);
+    const navigate = useNavigate();
     return (
-        <Card className="overflow-hidden border border-gray-200 rounded-xl transition-transform duration-300 transform hover:scale-[1.05] hover:shadow-lg">
-            <CardHeader className="p-6 pb-4 flex flex-row items-start gap-4">
-                <div className="flex-1 space-y-1">
-                    <div className="flex items-start justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
-                            {job?.title || "Untitled Role"}
-                        </h3>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-gray-400 hover:text-blue-600 transition-colors"
-                        >
-                            <Bookmark className="w-5 h-5" />
-                            <span className="sr-only">Bookmark</span>
-                        </Button>
-                    </div>
-                    <p className="text-sm text-blue-600 font-medium">
-                        {job?.company?.name || "Unnamed Company"}
-                    </p>
-                </div>
-            </CardHeader>
-
-            <CardContent className="px-6 pt-0 pb-4 ">
-                <p className="text-sm text-gray-600 line-clamp-2 mb-4">
-                    {job?.description || "No description provided."}
+        <div className="p-6 rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03]">
+            {/* Top Row: Posted Time & Bookmark */}
+            <div className="flex items-center justify-between mb-4">
+                <p className="text-sm text-gray-500">
+                    {
+                        job?.createdAt
+                            ? (daysAgoFunction(job.createdAt) === 0
+                                ? "Today"
+                                : daysAgoFunction(job.createdAt) === 1
+                                    ? "1 day ago"
+                                    : `${daysAgoFunction(job.createdAt)} days ago`)
+                            : ""
+                    }
                 </p>
-                <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                    {job?.location && (
-                        <div className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4 text-gray-400" />
-                            <span>{job.location}</span>
-                        </div>
-                    )}
-                    {job?.salary && (
-                        <div className="flex items-center gap-1">
-                            <DollarSign className="w-4 h-4 text-gray-400" />
-                            <span>{job.salary}</span>
-                        </div>
-                    )}
-                </div>
-            </CardContent>
+                <Button variant="outline" size="icon" className="rounded-full">
+                    <Bookmark className="w-4 h-4" />
+                </Button>
+            </div>
 
-            <CardFooter className="px-6 mt-8 pb-6 flex items-center justify-between">
-                <div className="flex gap-2">
-                    {job?.jobType && (
-                        <Badge
-                            variant="outline"
-                            className="bg-blue-50 text-blue-700 border border-blue-200"
-                        >
-                            {job.jobType}
-                        </Badge>
-                    )}
-                    {job?.position && (
-                        <Badge
-                            variant="outline"
-                            className="bg-blue-50 text-blue-700 border border-blue-200"
-                        >
-                            {job.position}
-                        </Badge>
-                    )}
+            {/* Company Info */}
+            <div className="flex items-center gap-4 mb-4">
+                <Avatar className="w-12 h-12">
+                    <AvatarImage src={job?.company?.logo || "https://via.placeholder.com/48"} />
+                </Avatar>
+                <div>
+                    <h2 className="font-semibold text-gray-800 text-base">
+                        {job?.company?.name || "Unnamed Company"}
+                    </h2>
+                    <p className="text-sm text-gray-500">{job?.location || "Unknown location"}</p>
                 </div>
-                <Button size="sm" variant="outline" className="cursor-pointer text-blue-400 hover:bg-blue-100">
+            </div>
+
+            {/* Job Title & Description */}
+            <div className="mb-4">
+                <h3 className="text-lg font-bold text-gray-800">{job?.title || "Untitled Role"}</h3>
+                <p className="text-sm text-gray-600 mt-1 line-clamp-3">
+                    {job?.description || "No description available."}
+                </p>
+            </div>
+
+            {/* Tags / Badges */}
+            <div className="flex flex-wrap gap-2 mt-2">
+                {job?.experience && (
+                    <Badge className="text-white font-medium border-primary bg-white text-primary">
+                        Experience {job.experience}
+                    </Badge>
+                )}
+                {job?.position && (
+                    <Badge className="text-white font-medium border-primary bg-white text-primary">
+                        Position {job.position}
+                    </Badge>
+                )}
+                {job?.jobType && (
+                    <Badge className="text-white font-medium border-primary bg-white text-primary">
+                        {job.jobType}
+                    </Badge>
+                )}
+                {job?.salary && (
+                    <Badge className="text-white font-medium border-primary bg-white text-primary">
+                        {job.salary}
+                    </Badge>
+                )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3 mt-6 flex-wrap">
+                <Button
+                    onClick={() => navigate(`/description/${job?._id}`)}
+                    className="bg-primary cursor-pointer text-white text-sm font-medium hover:opacity-90"
+                >
                     View Details
                 </Button>
-            </CardFooter>
-        </Card>
-
-
+                <Button
+                    variant="outline"
+                    className="text-sm font-medium cursor-pointer text-gray-700 hover:bg-gray-100 border border-gray-300 rounded-lg px-4 py-2"
+                >
+                    Save for Later
+                </Button>
+            </div>
+        </div>
     );
 };
 

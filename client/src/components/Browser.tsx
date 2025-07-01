@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "./global/Navbar";
-import Job from "./Job";
+import JobCard from "./Jobcard";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { setSearchedQuery } from "../../redux/jobSlice";
 import { useEffect } from "react";
@@ -26,7 +26,7 @@ function Browser() {
         <div className="grid lg:grid-cols-3 gap-4 mt-2">
           {allJobs && allJobs.length > 0 ? (
             allJobs.map((job: any) => (
-              <Job key={job._id} job={job} />
+              <JobCard key={job._id} job={job} />
             ))
           ) : (
             <div className="col-span-3 flex flex-col items-center justify-center py-20">

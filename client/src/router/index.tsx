@@ -21,7 +21,7 @@ const router = createBrowserRouter([
   { path: "/description/:id", element: <JobDescription /> },
   { path: "/browser", element: <Browser /> },
   { path: "/profile", element: <Profile /> },
-  
+
   // Admin
   { path: "/admin/companies", element: <Companies /> },
   { path: "/admin/companies/create", element: <CreateCompany /> },

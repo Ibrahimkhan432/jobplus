@@ -15,9 +15,10 @@ const useGetCompanyById = (companyId: string) => {
 
       try {
         setLoading(true);
-        const res = await axios.post(`${COMPANY_API_END_POINT}/get/${companyId}`, {}, {
+        const res = await axios.get(`${COMPANY_API_END_POINT}/get/${companyId}`, {
           withCredentials: true,
         });
+console.log("res useget " ,res.data);
 
         if (res.data.success) {
           dispatch(setSingleCompany(res.data.company));

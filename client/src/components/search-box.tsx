@@ -56,7 +56,7 @@ export default function SearchBox() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus:bg-blue-100 text-base text-gray-600 outline-none"
+            className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-base text-gray-600 outline-none"
           >
             <option value="">All Categories</option>
             <option value="technology">Technology</option>

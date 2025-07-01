@@ -41,52 +41,58 @@ function AdminJobTable() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border">
-        <Table>
-          <TableCaption>
-            All Jobs
-          </TableCaption>
-          <TableHeader>
+      <div className="rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <Table className="w-full text-sm">
+          <TableCaption className="text-sm text-gray-500 py-2">All Jobs</TableCaption>
+          <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableHead>Job Title</TableHead>
-              <TableHead>Company</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="text-gray-700">Job Title</TableHead>
+              <TableHead className="text-gray-700">Company</TableHead>
+              <TableHead className="text-gray-700">Location</TableHead>
+              <TableHead className="text-gray-700">Type</TableHead>
+              <TableHead className="text-gray-700 pr-4">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredJobs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-4">
-                  No jobs found matching "{searchJobByName}"
+                <TableCell colSpan={5} className="text-center py-6 text-gray-500">
+                  No jobs found matching <span className="font-semibold">"{searchJobByName}"</span>
                 </TableCell>
               </TableRow>
             ) : (
               filteredJobs.map((job: any) => (
-                <TableRow key={job._id}>
-                  <TableCell>{job.title}</TableCell>
-                  <TableCell>{job.company?.name || 'N/A'}</TableCell>
-                  <TableCell>{job.location}</TableCell>
-                  <TableCell>{job.type}</TableCell>
-                  <TableCell>
+                <TableRow
+                  key={job._id}
+                  className="hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <TableCell className="font-medium text-gray-900">{job.title}</TableCell>
+                  <TableCell className="text-gray-700">
+                    {job.company?.name || "N/A"}
+                  </TableCell>
+                  <TableCell className="text-gray-600">{job.location}</TableCell>
+                  <TableCell className="text-gray-600">{job.jobType}</TableCell>
+                  <TableCell className="text-right pr-4">
                     <Popover>
-                      <PopoverTrigger>
-                        <MoreHorizontalIcon className="cursor-pointer" />
+                      <PopoverTrigger asChild>
+                        <MoreHorizontalIcon className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer" />
                       </PopoverTrigger>
-                      <PopoverContent className="w-35 bg-white">
-                        <div className="flex flex-col gap-4">
-                          <div className="flex flex-col gap-2">
-                            <div
-                              onClick={() => navigate(`/admin/companies/${job._id}`)}
-                              className="cursor-pointer text-primary hover:text-primary/80">
-                              Edit
-                            </div>
-                            <div
-                              onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
-                              className="cursor-pointer text-primary hover:text-primary/80">
-                              Applicants
-                            </div>
+                      <PopoverContent
+                        align="end"
+                        className="w-40 p-2 bg-white border border-gray-200 rounded-md shadow-md"
+                      >
+                        <div className="flex flex-col gap-2">
+                          <div
+                            onClick={() => navigate(`/admin/companies/${job._id}`)}
+                            className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
+                          >
+                            Edit
+                          </div>
+                          <div
+                            onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
+                            className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer"
+                          >
+                            Applicants
                           </div>
                         </div>
                       </PopoverContent>
@@ -99,7 +105,7 @@ function AdminJobTable() {
         </Table>
       </div>
     </div>
-  )
+  );
 }
 
 export default AdminJobTable

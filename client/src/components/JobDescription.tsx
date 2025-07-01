@@ -80,13 +80,15 @@ function JobDescription() {
           </h1>
           <p className="text-sm text-gray-500 mt-1">{singleJob?.location}</p>
           <div className="flex flex-wrap gap-2 mt-3">
-            <Badge className="text-white font-medium bg-blue-600">
+            <Badge className="text-white font-medium border-primary bg-white text-primary">
               Experience: {singleJob?.experience}
             </Badge>
-            <Badge className="text-white font-medium bg-purple-600">
-              {singleJob?.salary}
+            <Badge className="text-white font-medium border-primary bg-white text-primary">
+              Position: {singleJob?.position}
             </Badge>
-            <Badge className="text-white font-medium bg-green-600">
+            <Badge className="text-white font-medium border-primary bg-white text-primary">              {singleJob?.salary}
+            </Badge>
+            <Badge className="text-white font-medium border-primary bg-white text-primary">
               {singleJob?.jobType}
             </Badge>
           </div>

@@ -1,6 +1,6 @@
 import FilterCard from "@/components/FilterCard";
 import Navbar from "@/components/global/Navbar";
-import Job from "@/components/Job";
+import JobCard from "@/components/Jobcard";
 import { useSelector } from "react-redux";
 
 
@@ -10,17 +10,16 @@ function Jobs() {
 
   return (
     <div>
-      <Navbar />
-      <div className="max-w-7xl mx-auto  sm:px-6 lg:px-8 mt-6 mb-10">
+      <div className="sticky top-0 w-full z-50">
+        <Navbar />
+      </div>
+      <div className="max-w-8xl mx-auto  sm:px-6 lg:px-8 mt-6 mb-10">
         <div className="flex flex-col lg:flex-row gap-6">
 
-          <div className="hidden lg:block lg:w-1/4 relative">
-            {/* Placeholder to maintain space */}
-            <div className="h-[300px]"></div>
-
+          <div className="hidden lg:block lg:max-w-1/4 relative">
             {/* Fixed FilterCard */}
-            <div className="fixed top-[80px] w-[310px]">
-            <FilterCard />
+            <div className="">
+              <FilterCard />
             </div>
 
             <div className="lg:hidden">
@@ -40,7 +39,7 @@ function Jobs() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {allJobs.map((job: any) => (
                   <div key={job?._id} >
-                    <Job job={job} />
+                    <JobCard job={job} />
                   </div>
                 ))}
               </div>
