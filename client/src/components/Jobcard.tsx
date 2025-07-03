@@ -16,7 +16,7 @@ const JobCard = ({ job }: any) => {
   }
 
   return (
-    <div className="p-6 rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03] m-4 sm:m-0">
+    <div className="p-6 rounded-xl shadow-lg bg-white border border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03] m-4 sm:m-0">
       <div className="flex items-center justify-between mb-4 m-2">
         <p className="text-sm text-gray-500">
           {
@@ -62,16 +62,9 @@ const JobCard = ({ job }: any) => {
         <Button
           onClick={() => navigate(`/description/${job?._id}`)}
           variant="outline"
-          className="bg-primary cursor-pointer text-white text-sm font-medium hover:opacity-90"
+          className="bg-primary cursor-pointer text-white text-sm font-medium hover:opacity-90 w-full"
         >
           View Details
-        </Button>
-        <Button className="
-        text-sm font-medium cursor-pointer text-gray-700 hover:bg-gray-100 border border-gray-300 rounded-lg px-4 py-2
-        "
-        variant="outline"
-        >
-          Save for Later
         </Button>
       </div>
     </div>

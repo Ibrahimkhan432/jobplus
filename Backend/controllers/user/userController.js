@@ -16,13 +16,14 @@ export const register = async (req, res) => {
       });
     }
 
-    const file = req.file;
-    let profilePhotoUrl = ""; 
-    if (file) {
-      const fileUri = getDataUri(file);
-      const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-      profilePhotoUrl = cloudResponse.secure_url;
-    }
+    // const file = req.file;
+    // let profilePhotoUrl = "";
+    // if (file) {
+    //   const fileUri = getDataUri(file);
+    //   const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    //   profilePhotoUrl = cloudResponse.secure_url;
+    // }
+
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
@@ -38,9 +39,6 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
-      profile: {
-        profilePhoto: profilePhotoUrl,
-      },
     });
 
     return res.status(201).json({
@@ -55,9 +53,9 @@ export const register = async (req, res) => {
 // user login
 export const login = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !password || !role) {
+    if (!email || !password) {
       return res.status(400).json({
         message: "please fill all fields",
         success: false,
@@ -78,12 +76,12 @@ export const login = async (req, res) => {
       });
     }
     // check role is correct or not
-    if (role !== user.role) {
-      return res.status(400).json({
-        message: "Account doesn't exist with current role.",
-        success: false,
-      });
-    }
+    // if (role !== user.role) {
+    //   return res.status(400).json({
+    //     message: "Account doesn't exist with current role.",
+    //     success: false,
+    //   });
+    // }
 
     const tokenData = {
       userId: user._id,
@@ -135,17 +133,34 @@ export const updateProfile = async (req, res) => {
   try {
     const { fullName, email, phoneNumber, bio, skills } = req.body;
 
-    const file = req.file;
-    console.log("req.file", req.file);
-    let cloudResponse;
-    if (file) {
-      const fileUri = getDataUri(file);
-      if (fileUri) {
-        cloudResponse = await cloudinary.uploader.upload(fileUri.content),
-          { resource_type: "raw" }
-      }
-    }
+  
+    console.log("fullName =>", fullName);
+    console.log("email =>", email);
+    console.log("phoneNumber =>", phoneNumber);
+    console.log("bio =>", bio);
+    console.log("skills =>", skills);
 
+    console.log("Files =>", req.files)
+
+    // resume
+    // let cloudResponse;
+    // if (file) {
+    //   console.log("req.file", req.file);
+    //   const fileUri = getDataUri(file);
+    //   if (fileUri) {
+    //     cloudResponse = await cloudinary.uploader.upload(fileUri.content),
+    //       { resource_type: "raw" }
+    //   }
+    // }
+
+// // profilePhoto
+// const file = req.file;
+// let profilePhotoUrl = "";
+// if (file) {
+//   const fileUri = getDataUri(file);
+//   const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+//   profilePhotoUrl = cloudResponse.secure_url;
+// }
 
     let skillsArray;
     if (skills) {
@@ -160,7 +175,6 @@ export const updateProfile = async (req, res) => {
         success: false,
       });
     }
-
     if (fullName) user.fullName = fullName;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
@@ -171,7 +185,7 @@ export const updateProfile = async (req, res) => {
       user.profile.resumeOriginalName = file.originalname;
     }
 
-    await user.save();
+    // await user.save();
 
     user = {
       _id: user._id,
@@ -179,7 +193,9 @@ export const updateProfile = async (req, res) => {
       email: user.email,
       phoneNumber: user.phoneNumber,
       role: user.role,
-      profile: user.profile,
+      skills: user.skills,
+      profilePhoto: user.profilePhoto,
+
     };
 
     return res.status(200).json({

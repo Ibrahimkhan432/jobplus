@@ -25,10 +25,14 @@ export default function Signup() {
     fullName: "",
     email: "",
     password: "",
+    confirmPassword: "",
     phoneNumber: "",
     role: "",
-    file: null as File | null,
   });
+
+
+  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((store: any) => store.auth);
@@ -39,24 +43,34 @@ export default function Signup() {
     setInput((input) => ({ ...input, [name]: value }));
   };
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setInput((input) => ({ ...input, file }));
-    }
-  };
+  // const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setInput((input) => ({ ...input, file }));
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    //password confirmation
+    if (input.password !== input.confirmPassword) {
+      setError("Password do not match");
+
+      return;
+    }
+
     const formData = new FormData();
     formData.append("fullName", input.fullName);
     formData.append("email", input.email);
     formData.append("password", input.password);
+    formData.append("confirmPassword", input.confirmPassword);
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("role", input.role);
-    if (input.file) {
-      formData.append("file", input.file);
-    }
+    // if (input.file) {
+    //   formData.append("file", input.file);
+    // }
     console.log("Signup submitted:", formData);
+    setError(null);
     try {
       dispatch(setLoadnig(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
@@ -67,7 +81,7 @@ export default function Signup() {
       });
       if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/login");
+        navigate("/");
         dispatch(setLoadnig(false));
       }
     } catch (error) {
@@ -133,6 +147,21 @@ export default function Signup() {
                     required
                   />
                 </div>
+                <div className="space-y-2 relative">
+                  <Label htmlFor="password">Confirm Password</Label>
+                  <Input
+                    className="border-1 border-gray-400"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    value={input.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                  {error && <p className="text-red-600 text-sm">{error}</p>}
+
+                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="phoneNumber">Phone Number</Label>
@@ -172,17 +201,6 @@ export default function Signup() {
                       <Label htmlFor="r2">Recruiter</Label>
                     </div>
                   </RadioGroup>
-                  <div className="space-y-2">
-                    <Label htmlFor="file">Upload Profile</Label>
-                    <Input
-                      className="border-1 border-gray-400"
-                      type="file"
-                      id="file"
-                      name="file"
-                      accept="image/*"
-                      onChange={handleFile}
-                    />
-                  </div>
                 </div>
                 {loading ? (
                   <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white cursor-pointer">
@@ -190,6 +208,7 @@ export default function Signup() {
                     <Loader />
                   </Button>
                 ) : (
+
                   <Button
                     type="submit"
                     className="w-full bg-blue-700 hover:bg-blue-800 text-white cursor-pointer"

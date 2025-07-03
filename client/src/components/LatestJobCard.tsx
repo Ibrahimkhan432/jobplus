@@ -95,19 +95,13 @@ const LatestJobCard: React.FC<LatestJobCardProps> = ({ job }) => {
                 )}
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Button */}
             <div className="flex items-center gap-3 mt-6 flex-wrap">
                 <Button
                     onClick={() => navigate(`/description/${job?._id}`)}
-                    className="bg-primary cursor-pointer text-white text-sm font-medium hover:opacity-90"
+                    className="bg-primary cursor-pointer text-white text-sm font-medium hover:opacity-90 w-full"
                 >
                     View Details
-                </Button>
-                <Button
-                    variant="outline"
-                    className="text-sm font-medium cursor-pointer text-gray-700 hover:bg-gray-100 border border-gray-300 rounded-lg px-4 py-2"
-                >
-                    Save for Later
                 </Button>
             </div>
         </div>

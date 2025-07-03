@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navbar from "../../../components/global/Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import { RadioGroup } from "@/components/ui/radio-group";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
@@ -18,7 +17,6 @@ export default function Login() {
   const [input, setInput] = useState({
     email: "",
     password: "",
-    role: "",
   });
   console.log("input", input);
 
@@ -50,6 +48,7 @@ export default function Login() {
     } catch (error) {
       console.error("Error during Login:", error);
       toast.error("Login failed. Please check your credentials.");
+      dispatch(setLoadnig(false));
     } finally {
       dispatch(setLoadnig(false));
     }
@@ -95,33 +94,6 @@ export default function Login() {
                     onChange={handleChange}
                     required
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="accountType">I am a</Label>
-                  <RadioGroup className="flex item-center gap-4">
-                    <div className="flex items-center space-x-2">
-                      <Input
-                        type="radio"
-                        name="role"
-                        value="student"
-                        checked={input.role === "student"}
-                        className="cursor-pointer md:w-[20px]"
-                        onChange={handleChange}
-                      />
-                      <Label htmlFor="r1">Student</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Input
-                        type="radio"
-                        name="role"
-                        value="recruiter"
-                        checked={input.role === "recruiter"}
-                        className="cursor-pointer md:w-[20px]"
-                        onChange={handleChange}
-                      />
-                      <Label htmlFor="r2">Recruiter</Label>
-                    </div>
-                  </RadioGroup>
                 </div>
                 {loading ? (
                   <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white cursor-pointer">

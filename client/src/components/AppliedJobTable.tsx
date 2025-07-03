@@ -11,6 +11,11 @@ import {
 } from "./ui/table";
 
 function AppliedJobTable() {
+
+  // get the api call here
+  // const getall   = fetch();
+  // dispatch(setALlaplicationdata(data))
+  // show on the ui 
   const allAppliedJobs = useSelector((store: any) => store.job.allAppliedJobs);
   console.log("allapplied jobs", allAppliedJobs);
 
@@ -33,7 +38,7 @@ function AppliedJobTable() {
                                 <TableCell>{appliedJob?.createdAt?.split("T")[0]}</TableCell>
                                 <TableCell>{appliedJob.job?.title}</TableCell>
                                 <TableCell>{appliedJob.job?.company?.name}</TableCell>
-                                <TableCell className="text-right"><Badge className={`${appliedJob?.status === "rejected" ? 'text-red-400' : appliedJob.status === 'pending' ? 'text-white' : 'text-green-400'}`}>{appliedJob.status.toUpperCase()}</Badge></TableCell>
+                                <TableCell className="text-right"><Badge className={`${appliedJob?.status === "rejected" ? 'text-red-400' : appliedJob.status === 'pending' ? 'text-white' : 'text-white'}`}>{appliedJob.status.toUpperCase()}</Badge></TableCell>
                             </TableRow>
                         ))
                     }

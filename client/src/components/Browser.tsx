@@ -21,8 +21,8 @@ function Browser() {
       <div className="bgMain-gradient">
         <Navbar />
       </div>
-      <div className="max-w-7xl mx-auto my-10 mt-5">
-        <h1 className="text-xl font-bold">Search Results {allJobs.length}</h1>
+      <div className="max-w-7xl mx-auto my-10 mt-5  px-2">
+        <h1 className="text-xl font-bold ml-4">Search Results {allJobs.length}</h1>
         <div className="grid lg:grid-cols-3 gap-4 mt-2">
           {allJobs && allJobs.length > 0 ? (
             allJobs.map((job: any) => (

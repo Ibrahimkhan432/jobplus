@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { User, LogOut, Menu, Search, Bell } from "lucide-react";
+import { useState, } from "react";
+import { User, LogOut, Menu, Bell } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -187,7 +187,7 @@ export default function Navbar() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="justify-start hover:bg-blue-50 hover:text-blue-600 cursor-pointer"
+                          className="justify-start w-full hover:bg-blue-50 hover:text-blue-600 cursor-pointer"
                         >
                           <User className="mr-2 h-4 w-4" />
                           Profile
@@ -197,7 +197,7 @@ export default function Navbar() {
                         onClick={handleLogout}
                         variant="ghost"
                         size="sm"
-                        className="justify-start hover:bg-blue-50 hover:text-blue-600 cursor-pointer"
+                        className="justify-start w-full hover:bg-blue-50 hover:text-blue-600 cursor-pointer"
                       >
                         <LogOut
                           className="mr-2 h-4 w-4"
@@ -261,18 +261,18 @@ export default function Navbar() {
             {user?.role === "recruiter" ? (
               <>
                 <Link
-                  to="companies"
+                  to="/admin/companies"
                   className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white/20 text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   Companies
                 </Link>
                 <Link
-                  to="my-jobs"
+                  to="/admin/jobs"
                   className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white/20 text-white"
                   onClick={() => setIsOpen(false)}
                 >
-                  My Jobs
+                  Jobs
                 </Link>
               </>
             ) : (

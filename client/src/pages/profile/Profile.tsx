@@ -2,18 +2,142 @@ import AppliedJobTable from "@/components/AppliedJobTable";
 import Navbar from "@/components/global/Navbar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Contact, Mail, Pen } from "lucide-react";
+import { Pen } from "lucide-react";
 import React from "react";
-import UpdateProfileDialog from "../../components/UpdateProfileDialog";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import useGetAppliedJobs from "../../hooks/useGetAppliedJobs";
+import axios from "axios";
+import { toast } from "sonner";
+import { setUser } from "../../../redux/authSlice";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { Progress } from "@/components/ui/progress";
+
 const isResume = true;
 const isApplied = true;
+
 function Profile() {
   useGetAppliedJobs();
-  const [open, setOpen] = React.useState(false);
   const { user } = useSelector((store: any) => store.auth);
-  console.log("user", user);
+  const dispatch = useDispatch();
+  const [editMode, setEditMode] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [form, setForm] = React.useState({
+    fullName: user?.fullName || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    bio: user?.profile?.bio || "",
+    skills: user?.profile?.skills ? user.profile.skills.join(", ") : "",
+    file: null as File | null,
+    profilePhoto: user?.profile?.profilePhoto || ""
+  });
+
+  React.useEffect(() => {
+    setForm({
+      fullName: user?.fullName || "",
+      email: user?.email || "",
+      phoneNumber: user?.phoneNumber || "",
+      bio: user?.profile?.bio || "",
+      skills: user?.profile?.skills ? user.profile.skills.join(", ") : "",
+      file: null,
+      profilePhoto: user?.profile?.profilePhoto || ""
+    });
+  }, [user]);
+
+  const profileFields = [
+    user?.fullName,
+    user?.email,
+    user?.phoneNumber,
+    user?.profile?.bio,
+    user?.profile?.skills && user.profile.skills.length > 0,
+    user?.profile?.resume,
+    user?.profile?.profilePhoto,
+  ];
+  const filledFields = profileFields.filter(Boolean).length;
+  const totalFields = profileFields.length;
+  const completion = Math.round((filledFields / totalFields) * 100);
+  const isProfileComplete = completion === 100;
+
+  const photoInputRef = React.useRef<HTMLInputElement>(null);
+  const handlePhotoClick = () => {
+    photoInputRef.current?.click();
+  };
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setForm(prev => ({
+        ...prev,
+        profilePhoto: URL.createObjectURL(e.target.files![0]),
+        file: e.target.files![0]
+      }));
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setForm(prev => ({ ...prev, file: e.target.files![0] }));
+    }
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("fullName", form.fullName);
+      formData.append("email", form.email);
+      formData.append("phoneNumber", form.phoneNumber);
+      formData.append("bio", form.bio);
+      formData.append("skills", form.skills);
+
+      if (form.file) {
+        // Check if the file is an image or resume
+        if (form.file.type.startsWith('image/*')) {
+          formData.append("profilePhoto", form.file);
+        } else {
+          formData.append("file", form.file);
+        }
+      }
+
+      const res = await axios.post(
+        `${USER_API_END_POINT}/profile/update`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log("res in profile update", res.data);
+
+      if (res.data.success) {
+        dispatch(setUser(res.data.user));
+        toast.success(res.data.message);
+        setEditMode(false);
+      }
+    } catch (error) {
+      toast.error("Something went wrong while updating profile");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setForm({
+      fullName: user?.fullName || "",
+      email: user?.email || "",
+      phoneNumber: user?.phoneNumber || "",
+      bio: user?.profile?.bio || "",
+      skills: user?.profile?.skills ? user.profile.skills.join(", ") : "",
+      file: null,
+      profilePhoto: user?.profile?.profilePhoto || ""
+    });
+    setEditMode(false);
+  };
 
   return (
     <div>
@@ -21,89 +145,197 @@ function Profile() {
         <Navbar />
       </div>
 
-      <div className="max-w-4xl mx-auto mt-10 sm:p-4 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 p-6">
-        <div className="flex items-center gap-6">
-          <Avatar className="w-24 h-24">
-            <AvatarImage
-              src={user?.profile?.profilePhoto || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXZhdGFyfGVufDB8fDB8fHww"}
-              alt="Profile Picture"
-            />
-          </Avatar>
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              {user?.fullName}
-            </h1>
-            <p className="text-gray-600">{user?.profile?.bio}</p>
+      <div className="max-w-4xl mx-auto mt-10 p-6 space-y-6">
+        {/* Profile Header */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="relative group">
+              <Avatar className="w-24 h-24">
+                <AvatarImage
+                  src={form.profilePhoto || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s"}
+                  alt="Profile Picture"
+                />
+              </Avatar>
+              {editMode && (
+                <div
+                  className="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                  onClick={handlePhotoClick}
+                >
+                  <Pen className="text-white w-6 h-6" />
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                ref={photoInputRef}
+                style={{ display: "none" }}
+                onChange={handlePhotoChange}
+              />
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <h1 className="text-2xl font-semibold text-gray-900">
+                {editMode ? (
+                  <input
+                    className="border-b-2 border-gray-300 focus:border-primary outline-none text-center sm:text-left bg-transparent w-full"
+                    name="fullName"
+                    value={form.fullName}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  user?.fullName
+                )}
+              </h1>
+              <p className="text-gray-600 mt-2">
+                {editMode ? (
+                  <input
+                    className="border-b-2 border-gray-300 focus:border-primary outline-none text-center sm:text-left bg-transparent w-full"
+                    name="bio"
+                    value={form.bio}
+                    onChange={handleChange}
+                    placeholder="Add a short bio"
+                  />
+                ) : (
+                  user?.profile?.bio || "No bio added"
+                )}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div>
-          <Button
-            onClick={() => setOpen(true)}
-            variant="outline"
-            className="border-gray-300 text-gray-700 cursor-pointer"
-          >
-            <Pen className="w-2 h-2 mr-2" />
-            Edit Profile
-          </Button>
-        </div>
-      </div>
-      <div className="max-w-4xl mx-auto mt-2 px-6 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm space-y-4">
-        <div className="flex items-center gap-3 text-gray-700">
-          <Mail className="w-5 h-5 text-primary" />
-          <span className="text-sm sm:text-base">{user?.email}</span>
-        </div>
-        <div className="flex items-center gap-3 text-gray-700">
-          <Contact className="w-5 h-5 text-primary" />
-          <span className="text-sm sm:text-base">{user?.phoneNumber}</span>
-        </div>
-        <div>
-          <h1 className="font-semibold"> Skills</h1>
-          {user?.profile?.skills && user.profile.skills.length > 0 ? (
-            user.profile.skills.map((skill: string, index: number) => (
-              <span
-                key={index}
-                className="inline-block bg-gray-200 text-gray-700 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full mt-2"
+        {/* Profile Completion */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold">Profile Completion</h2>
+            {!editMode ? (
+              <Button
+                size="sm"
+                className="bg-primary text-white cursor-pointer"
+                onClick={() => setEditMode(true)}
               >
-                {skill}
+                Edit Profile
+              </Button>
+            ) : (
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save Changes"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-1">
+              <span className={`text-sm font-medium ${isProfileComplete ? 'text-green-600' : 'text-yellow-600'}`}>
+                {isProfileComplete ? 'Profile complete!' : `${completion}% complete`}
               </span>
-            ))
-          ) : (
-            <span className="inline-block bg-gray-200 text-gray-700 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-              No skills added
-            </span>
-          )}
+              <span className="text-xs font-medium text-gray-700">{filledFields}/{totalFields} fields</span>
+            </div>
+            <Progress value={completion} className={isProfileComplete ? 'bg-green-500' : 'bg-yellow-400'} />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Email */}
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">Email</label>
+              {editMode ? (
+                <input
+                  className="border px-3 py-2 rounded w-full focus:ring-primary focus:border-primary"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                />
+              ) : (
+                <p className="text-gray-900">{user?.email || "Not provided"}</p>
+              )}
+            </div>
+
+            {/* Phone */}
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">Phone</label>
+              {editMode ? (
+                <input
+                  className="border px-3 py-2 rounded w-full focus:ring-primary focus:border-primary"
+                  name="phoneNumber"
+                  value={form.phoneNumber}
+                  onChange={handleChange}
+                />
+              ) : (
+                <p className="text-gray-900">{user?.phoneNumber || "Not provided"}</p>
+              )}
+            </div>
+
+            {/* Skills */}
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">Skills</label>
+              {editMode ? (
+                <input
+                  className="border px-3 py-2 rounded w-full focus:ring-primary focus:border-primary"
+                  name="skills"
+                  value={form.skills}
+                  onChange={handleChange}
+                  placeholder="Comma separated skills"
+                />
+              ) : (
+                <p className="text-gray-900">
+                  {user?.profile?.skills && user.profile.skills.length > 0
+                    ? user.profile.skills.join(", ")
+                    : "No skills added"}
+                </p>
+              )}
+            </div>
+
+            {/* Resume */}
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-700">Resume</label>
+              {editMode ? (
+                <input
+                  type="file"
+                  className="border px-3 py-2 rounded w-full focus:ring-primary focus:border-primary"
+                  name="file"
+                  onChange={handleFileChange}
+                  accept=".pdf,.doc,.docx"
+                />
+              ) : (
+                user?.profile?.resume ? (
+                  <a
+                    href={user.profile.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    {user?.profile?.resumeOriginalName || "View Resume"}
+                  </a>
+                ) : (
+                  <p className="text-gray-500">No resume uploaded</p>
+                )
+              )}
+            </div>
+          </div>
         </div>
-        <div>
-          <h1 className="font-semibold">Resume</h1>
-          {isResume ? (
-            <a
-              href={user?.profile?.resume}
-              target="_blank"
-              className="text-blue-500 mt-2 cursor-pointer hover:underline"
-            >
-              {user?.profile?.resumeOriginalName}
-            </a>
-          ) : (
-            <span className="text-gray-500 mt-2">No resume uploaded</span>
-          )}
-        </div>
-      </div>
-      {
-        user && user.role === "student" && (
-          <div className="max-w-4xl mx-auto mt-2 px-6 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm space-y-4">
-            <h1 className="font-semibold">Applied Jobs</h1>
+
+        {/* Applied Jobs */}
+        {user && user.role === "student" && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold mb-4">Applied Jobs</h2>
             {isApplied ? (
               <AppliedJobTable />
             ) : (
-              <span className="text-gray-500 mt-2">No applied jobs</span>
+              <p className="text-gray-500">No applied jobs</p>
             )}
           </div>
-        )
-
-      }
-
-      <UpdateProfileDialog open={open} setOpen={setOpen} />
+        )}
+      </div>
     </div>
   );
 }

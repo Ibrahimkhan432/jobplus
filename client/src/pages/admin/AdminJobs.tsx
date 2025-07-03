@@ -26,7 +26,7 @@ function AdminJobs() {
                             onChange={(e) => dispatch(setSearchJobByName(e.target.value))}
                             type="text"
                             placeholder="Search jobs by title"
-                            className="w-full"
+                            className="w-3/4"
                         />
                     </div>
                     <Button
