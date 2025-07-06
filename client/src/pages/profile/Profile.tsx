@@ -88,19 +88,18 @@ function Profile() {
     try {
       const formData = new FormData();
       formData.append("fullName", form.fullName);
-      formData.append("email", form.email);
+      formData.append("email", form.email); 
       formData.append("phoneNumber", form.phoneNumber);
       formData.append("bio", form.bio);
       formData.append("skills", form.skills);
 
-      if (form.file) {
-        // Check if the file is an image or resume
-        if (form.file.type.startsWith('image/*')) {
-          formData.append("profilePhoto", form.file);
-        } else {
-          formData.append("file", form.file);
-        }
-      }
+    if (form.file) {
+  if (form.file.type.startsWith('image/')) {
+    formData.append("profilePhoto", form.file); // for photo
+  } else {
+    formData.append("file", form.file); // for resume
+  }
+}
 
       const res = await axios.post(
         `${USER_API_END_POINT}/profile/update`,
@@ -218,12 +217,14 @@ function Profile() {
               <div className="flex gap-2">
                 <Button
                   size="sm"
+                  className="bg-primary text-white cursor-pointer"
                   onClick={handleSave}
                   disabled={loading}
                 >
                   {loading ? "Saving..." : "Save Changes"}
                 </Button>
                 <Button
+                  className="text-gray-700 border-gray-300 hover:bg-gray-100 cursor-pointer"
                   size="sm"
                   variant="outline"
                   onClick={handleCancel}

@@ -13,8 +13,8 @@ function Hero() {
           backgroundBlendMode: "overlay",
         }}
       >
-        <div className="absolute inset-0 bgMain-gradient"></div>
-        <div className="relative z-10 h-full flex flex-col">
+        <div className="absolute inset-0 min-h-screen  bgMain-gradient"></div>
+        <div className="relative z-10 h-full flex flex-col ">
           <div className="flex-1 container mx-auto px-4 flex flex-col items-center justify-center text-center">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">
               Find Your Dream Job Today
@@ -25,32 +25,35 @@ function Hero() {
             </p>
             {/* Search Box */}
             <SearchBox />
-            <CategoryCarousel/>
-            <div className="mt-8 flex flex-wrap gap-4 justify-center">
-              <Button
-                variant="outline"
-                className="bg-white/20 text-white border-white/40 hover:bg-white/30"
-              >
-                Popular: Web Development
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-white/20 text-white border-white/40 hover:bg-white/30"
-              >
-                UX Design
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-white/20 text-white border-white/40 hover:bg-white/30"
-              >
-                Marketing
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-white/20 text-white border-white/40 hover:bg-white/30"
-              >
-                Remote Jobs
-              </Button>
+            <CategoryCarousel />
+            <div className="mt-4 flex flex-col items-center">
+              <h1 className="font-bold text-white text-xl mb-2">Popular Search</h1>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Button
+                  variant="outline"
+                  className="bg-white/20 text-white border-white/40 hover:bg-white/30"
+                >
+                  Web Development
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-white/20 text-white border-white/40 hover:bg-white/30"
+                >
+                  UX Design
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-white/20 text-white border-white/40 hover:bg-white/30"
+                >
+                  Marketing
+                </Button>
+                <Button
+                  variant="outline"
+                  className="bg-white/20 text-white border-white/40 hover:bg-white/30"
+                >
+                  Remote Jobs
+                </Button>
+              </div>
             </div>
           </div>
         </div>

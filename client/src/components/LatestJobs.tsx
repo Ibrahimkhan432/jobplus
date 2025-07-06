@@ -7,7 +7,7 @@ function LatestJobs() {
   const { allJobs } = useSelector((store: any) => store.job);
 
   return (
-    <section className="px-4 sm:px-6 lg:px-10 py-10 bg-gray-50">
+    <section className="px-4 sm:px-6 lg:px-10 py-10">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">

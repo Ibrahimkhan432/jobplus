@@ -17,7 +17,7 @@ function AppliedJobTable() {
   // dispatch(setALlaplicationdata(data))
   // show on the ui 
   const allAppliedJobs = useSelector((store: any) => store.job.allAppliedJobs);
-  console.log("allapplied jobs", allAppliedJobs);
+  // console.log("allapplied jobs", allAppliedJobs);
 
   return (
     <div>

@@ -13,22 +13,85 @@ import AdminJobs from "@/pages/admin/AdminJobs";
 import CreateJob from "@/pages/admin/CreateJob";
 import JobApplicants from "@/pages/admin/JobApplicants";
 
+// ...existing imports...
+import ProtectedRoute from "@/router/ProtectedRoute";
+
 const router = createBrowserRouter([
+  // Protected routes
+
+  // Public Routes
   { path: "/", element: <Home /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/login", element: <Login /> },
+  {
+    path: "/signup",
+    element: (
+      <ProtectedRoute>
+        <Signup />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <ProtectedRoute>
+        <Login />
+      </ProtectedRoute>
+    ),
+  },
   { path: "/jobs", element: <Jobs /> },
   { path: "/description/:id", element: <JobDescription /> },
   { path: "/browser", element: <Browser /> },
   { path: "/profile", element: <Profile /> },
 
   // Admin
-  { path: "/admin/companies", element: <Companies /> },
-  { path: "/admin/companies/create", element: <CreateCompany /> },
-  { path: "/admin/companies/:id", element: <CompanySetup /> },
-  { path: "/admin/jobs", element: <AdminJobs /> },
-  { path: "/admin/jobs/create", element: <CreateJob /> },
-  { path: "/admin/jobs/:id/applicants", element: <JobApplicants /> },
+   {
+    path: "/admin/companies",
+    element: (
+      <ProtectedRoute>
+        <Companies />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/companies/create",
+    element: (
+      <ProtectedRoute>
+        <CreateCompany />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/companies/:id",
+    element: (
+      <ProtectedRoute>
+        <CompanySetup />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/jobs",
+    element: (
+      <ProtectedRoute>
+        <AdminJobs />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/jobs/create",
+    element: (
+      <ProtectedRoute>
+        <CreateJob />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/jobs/:id/applicants",
+    element: (
+      <ProtectedRoute>
+        <JobApplicants />
+      </ProtectedRoute>
+    ),
+  },
 ]);
 
 export default router;
+
