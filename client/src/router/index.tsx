@@ -43,7 +43,7 @@ const router = createBrowserRouter([
   { path: "/profile", element: <Profile /> },
 
   // Admin
-   {
+  {
     path: "/admin/companies",
     element: (
       <ProtectedRoute>
@@ -94,4 +94,3 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
-

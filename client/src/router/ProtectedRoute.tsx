@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to="/" replace />;
   }
 
-   if (user.role !== "recruiter") {
+  if (user.role !== "recruiter") {
     return <Navigate to="/" replace />;
   }
 
