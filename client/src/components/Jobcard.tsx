@@ -16,7 +16,9 @@ const JobCard = ({ job }: any) => {
   }
 
   return (
-    <div className="p-6 rounded-xl shadow-lg bg-white border border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03] m-4 sm:m-0">
+    <div
+      onClick={() => navigate(`/description/${job?._id}`)}
+      className="p-6 rounded-xl shadow-lg bg-white border border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03] m-4 sm:m-0 cursor-pointer">
       <div className="flex items-center justify-between mb-4 m-2">
         <p className="text-sm text-gray-500">
           {
@@ -51,14 +53,15 @@ const JobCard = ({ job }: any) => {
       </div>
 
       <div className="flex flex-wrap gap-2 mt-2">
-        <Badge className="text-white font-medium border-primary bg-white text-primary"> Experience: {job?.experience}</Badge>
+        <Badge className="text-white font-medium border-primary bg-white text-primary">  Experience: {typeof job?.experience === "number" && job.experience >= 0 ? job.experience : "0"}
+        </Badge>
         <Badge className="text-white font-medium border-primary bg-white text-primary"> Position: {job?.position}</Badge>
         <Badge className="text-white font-medium border-primary bg-white text-primary">{job?.jobType}</Badge>
         <Badge className="text-white font-medium border-primary bg-white text-primary">{job?.salary}</Badge>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-3 mt-6">
+      {/* <div className="flex items-center gap-3 mt-6">
         <Button
           onClick={() => navigate(`/description/${job?._id}`)}
           variant="outline"
@@ -66,7 +69,7 @@ const JobCard = ({ job }: any) => {
         >
           View Details
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

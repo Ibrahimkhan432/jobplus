@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useSelector } from "react-redux";
-import LatestJobCard from "./LatestJobCard";
+import JobCard from "./Jobcard";
 
 function LatestJobs() {
   const { allJobs } = useSelector((store: any) => store.job);
@@ -41,7 +41,7 @@ function LatestJobs() {
             </div>
           ) : (
             allJobs?.slice(0, 6).map((job: any) => (
-              <LatestJobCard key={job._id} job={job} />
+              <JobCard key={job._id} job={job} />
             ))
           )}
         </div>

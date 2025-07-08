@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+// import { createBrowserRouter } from "react-router-dom";
 import Home from "../pages/main/Home";
 import Login from "../pages/auth/login/Login";
 import Signup from "@/pages/auth/signup/Signup";
@@ -12,84 +12,35 @@ import CompanySetup from "@/pages/admin/CompanySetup";
 import AdminJobs from "@/pages/admin/AdminJobs";
 import CreateJob from "@/pages/admin/CreateJob";
 import JobApplicants from "@/pages/admin/JobApplicants";
-
-// ...existing imports...
 import ProtectedRoute from "@/router/ProtectedRoute";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 
 const router = createBrowserRouter([
-  // Protected routes
-
   // Public Routes
   { path: "/", element: <Home /> },
-  {
-    path: "/signup",
-    element: (
-      <ProtectedRoute>
-        <Signup />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/login",
-    element: (
-      <ProtectedRoute>
-        <Login />
-      </ProtectedRoute>
-    ),
-  },
+  { path: "/signup", element: <Signup /> },
+  { path: "/login", element: <Login /> },
   { path: "/jobs", element: <Jobs /> },
   { path: "/description/:id", element: <JobDescription /> },
   { path: "/browser", element: <Browser /> },
   { path: "/profile", element: <Profile /> },
 
-  // Admin
+  // Admin Protected Routes (all children protected)
   {
-    path: "/admin/companies",
+    path: "/admin",
     element: (
-      <ProtectedRoute>
-        <Companies />
+      <ProtectedRoute allowedRoles={["recruiter"]}>
+        <Outlet />
       </ProtectedRoute>
     ),
-  },
-  {
-    path: "/admin/companies/create",
-    element: (
-      <ProtectedRoute>
-        <CreateCompany />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/companies/:id",
-    element: (
-      <ProtectedRoute>
-        <CompanySetup />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/jobs",
-    element: (
-      <ProtectedRoute>
-        <AdminJobs />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/jobs/create",
-    element: (
-      <ProtectedRoute>
-        <CreateJob />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/admin/jobs/:id/applicants",
-    element: (
-      <ProtectedRoute>
-        <JobApplicants />
-      </ProtectedRoute>
-    ),
+    children: [
+      { path: "companies", element: <Companies /> },
+      { path: "companies/create", element: <CreateCompany /> },
+      { path: "companies/:id", element: <CompanySetup /> },
+      { path: "jobs", element: <AdminJobs /> },
+      { path: "jobs/create", element: <CreateJob /> },
+      { path: "jobs/:id/applicants", element: <JobApplicants /> },
+    ],
   },
 ]);
 
