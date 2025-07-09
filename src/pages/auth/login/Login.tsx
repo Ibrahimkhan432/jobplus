@@ -6,12 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navbar from "../../../components/global/Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoadnig, setUser } from "./../../../../redux/authSlice";
 import { Loader } from "lucide-react";
+import axiosInstance from "../../../utils/axios";
+import { USER_API_END_POINT } from "@/utils/constant";
 
 export default function Login() {
   const [input, setInput] = useState({
@@ -22,9 +22,9 @@ export default function Login() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading,user } = useSelector((store: any) => store.auth);
+  const { loading, user } = useSelector((store: any) => store.auth);
 
- useEffect(() => {
+  useEffect(() => {
     if (user) {
       navigate("/", { replace: true });
     }
@@ -41,17 +41,13 @@ export default function Login() {
     e.preventDefault();
     try {
       dispatch(setLoadnig(true));
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const res = await axiosInstance.post(`${USER_API_END_POINT}/login`, input);
       if (res.data.success) {
         dispatch(setUser(res.data.user));
         toast.success("Login successful");
-          navigate("/");
+        navigate("/");
       }
+      console.log(res)
     } catch (error) {
       console.error("Error during Login:", error);
       toast.error("Login failed. Please check your credentials.");
