@@ -1,9 +1,8 @@
-import { COMPANY_API_END_POINT } from "@/utils/constant";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSingleCompany } from "../../redux/companySlice";
 import { toast } from "sonner";
+import axiosInstance from "@/utils/axios";
 
 const useGetCompanyById = (companyId: string) => {
   const [loading, setLoading] = useState(true);
@@ -15,10 +14,10 @@ const useGetCompanyById = (companyId: string) => {
 
       try {
         setLoading(true);
-        const res = await axios.get(`${COMPANY_API_END_POINT}/get/${companyId}`, {
+        const res = await axiosInstance.get(`/company/get/${companyId}`, {
           withCredentials: true,
         });
-console.log("res useget " ,res.data);
+        console.log("res useget ", res.data);
 
         if (res.data.success) {
           dispatch(setSingleCompany(res.data.company));

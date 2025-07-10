@@ -6,14 +6,12 @@ import { Pen } from "lucide-react";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useGetAppliedJobs from "../../hooks/useGetAppliedJobs";
-import axios from "axios";
 import { toast } from "sonner";
 import { setUser } from "../../../redux/authSlice";
-import { USER_API_END_POINT } from "@/utils/constant";
 import { Progress } from "@/components/ui/progress";
+import axiosInstance from "@/utils/axios";
 
-const isResume = true;
-const isApplied = true;
+  const isApplied = true;
 
 function Profile() {
   useGetAppliedJobs();
@@ -88,21 +86,21 @@ function Profile() {
     try {
       const formData = new FormData();
       formData.append("fullName", form.fullName);
-      formData.append("email", form.email); 
+      formData.append("email", form.email);
       formData.append("phoneNumber", form.phoneNumber);
       formData.append("bio", form.bio);
       formData.append("skills", form.skills);
 
-    if (form.file) {
-  if (form.file.type.startsWith('image/')) {
-    formData.append("profilePhoto", form.file); // for photo
-  } else {
-    formData.append("file", form.file); // for resume
-  }
-}
+      if (form.file) {
+        if (form.file.type.startsWith('image/')) {
+          formData.append("profilePhoto", form.file); // for photo
+        } else {
+          formData.append("file", form.file); // for resume
+        }
+      }
 
-      const res = await axios.post(
-        `${USER_API_END_POINT}/profile/update`,
+      const res = await axiosInstance.post(
+        `/user/profile/update`,
         formData,
         {
           headers: {

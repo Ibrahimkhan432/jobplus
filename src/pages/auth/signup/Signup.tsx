@@ -13,12 +13,11 @@ import { Button } from "@/components/ui/button";
 import Navbar from "../../../components/global/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { RadioGroup } from "@/components/ui/radio-group";
-import axios from "axios";
 import { toast } from "sonner";
-import { USER_API_END_POINT } from "../../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoadnig } from "./../../../../redux/authSlice";
 import { Loader } from "lucide-react";
+import axiosInstance from "@/utils/axios";
 
 export default function Signup() {
   const [input, setInput] = useState({
@@ -73,7 +72,7 @@ export default function Signup() {
     setError(null);
     try {
       dispatch(setLoadnig(true));
-      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+      const res = await axiosInstance.post(`/user/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

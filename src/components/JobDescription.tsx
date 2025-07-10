@@ -2,11 +2,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "../../redux/jobSlice";
 import { toast } from "sonner";
+import axiosInstance from "@/utils/axios";
 
 function JobDescription() {
   const navigate = useNavigate();
@@ -23,16 +22,13 @@ function JobDescription() {
   const isInitiallyApplied =
     applications?.some(
       (application: any) =>
-        (typeof application.applicant === "string"
-          ? application.applicant
-          : application.applicant?._id) === user?._id
-    ) || false;
+        (typeof application.applicant === "string" && application.applicant === user._id)) || false;
+
 
   const [isApplied, setIsApplied] = useState(isInitiallyApplied)
-
   const applyJobHandler = async () => {
     try {
-      const res = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, {
+      const res = await axiosInstance.post(`/application/apply/${jobId}`, {
         withCredentials: true,
       });
       if (res.data.success) {
@@ -51,7 +47,7 @@ function JobDescription() {
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
-        const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
+        const res = await axiosInstance.get(`/job/get/${jobId}`, {
           withCredentials: true,
         });
         if (res.data.success) {

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const JobCard = ({ job }: any) => {
-  console.log("job", job);
+  // console.log("job", job);
   const navigate = useNavigate();
 
   const daysAgoFunction = (mongodbTime: any) => {

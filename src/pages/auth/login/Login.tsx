@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoadnig, setUser } from "./../../../../redux/authSlice";
 import { Loader } from "lucide-react";
 import axiosInstance from "../../../utils/axios";
-import { USER_API_END_POINT } from "@/utils/constant";
 
 export default function Login() {
   const [input, setInput] = useState({
@@ -25,7 +24,8 @@ export default function Login() {
   const { loading, user } = useSelector((store: any) => store.auth);
 
   useEffect(() => {
-    if (user) {
+    // Only redirect if user is authenticated (e.g., has a valid token and user object)
+    if (user && user.email) {
       navigate("/", { replace: true });
     }
   }, [user, navigate]);
@@ -41,13 +41,12 @@ export default function Login() {
     e.preventDefault();
     try {
       dispatch(setLoadnig(true));
-      const res = await axiosInstance.post(`${USER_API_END_POINT}/login`, input);
+      const res = await axiosInstance.post(`/user/login`, input);
       if (res.data.success) {
         dispatch(setUser(res.data.user));
         toast.success("Login successful");
         navigate("/");
       }
-      console.log(res)
     } catch (error) {
       console.error("Error during Login:", error);
       toast.error("Login failed. Please check your credentials.");

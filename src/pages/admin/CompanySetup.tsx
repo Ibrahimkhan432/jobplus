@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import axios from "axios";
-import { COMPANY_API_END_POINT } from "@/utils/constant";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import useGetCompanyById from "@/hooks/useGetCompanyById";
 import { setSingleCompany } from "../../../redux/companySlice";
+import axiosInstance from "@/utils/axios";
 
 const CompanySetup = () => {
     const params = useParams();
@@ -28,7 +27,7 @@ const CompanySetup = () => {
         file: null as File | null,
     });
 
-    useEffect(() => {   
+    useEffect(() => {
         if (company) {
             setFormData({
                 name: company.name || "",
@@ -70,8 +69,8 @@ const CompanySetup = () => {
                 formDataToSend.append("file", formData.file);
             }
 
-            const response = await axios.put(
-                `${COMPANY_API_END_POINT}/update/${params.id}`,
+            const response = await axiosInstance.put(
+                `/company/update/${params.id}`,
                 formDataToSend,
                 {
                     headers: {

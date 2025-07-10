@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/global/Navbar";
-import axios from "axios";
-import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import ApplicantsTable from "@/components/admin/ApplicantsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllApplicants } from "../../../redux/applicationSlice";
+import axiosInstance from "@/utils/axios";
 
 interface Applicant {
   _id: string;
@@ -30,7 +29,7 @@ const JobApplicants = () => {
     const fetchApplicants = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${APPLICATION_API_END_POINT}/${params.id}/applicants`, {
+        const res = await axiosInstance.get(`/application/${params.id}/applicants`, {
           withCredentials: true,
         });
         // console.log("response to fetchAll APplicants", res);
@@ -73,7 +72,7 @@ const JobApplicants = () => {
             onClick={() => navigate("/admin/jobs")}
           />
           <h1 className="text-2xl font-bold text-gray-900">
-            Applicants for {jobTitle} 
+            Applicants for {jobTitle}
             <span className="ml-2">{applicants?.applications?.length}</span>
           </h1>
         </div>

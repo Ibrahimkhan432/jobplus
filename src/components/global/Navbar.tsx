@@ -11,10 +11,9 @@ import {
 } from "@/components/ui/popover";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { USER_API_END_POINT } from "@/utils/constant";
-import axios from "axios";
 import { toast } from "sonner";
 import { setUser } from "../../../redux/authSlice"
+import axiosInstance from "@/utils/axios";
 export default function Navbar() {
   const { user } = useSelector((store: any) => store.auth);
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +23,7 @@ export default function Navbar() {
   const handleLogout = async () => {
 
     try {
-      const res = await axios.get(`${USER_API_END_POINT}/Logout`, {
+      const res = await axiosInstance.get(`/user/Logout`, {
         withCredentials: true,
       });
       if (res.data.success) {

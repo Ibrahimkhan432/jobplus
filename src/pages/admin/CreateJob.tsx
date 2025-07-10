@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import axios from "axios";
-import { JOB_API_END_POINT } from "@/utils/constant";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +8,7 @@ import Navbar from "@/components/global/Navbar";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useSelector } from "react-redux";
+import axiosInstance from "@/utils/axios";
 
 const CreateJob = () => {
     const navigate = useNavigate();
@@ -36,10 +35,10 @@ const CreateJob = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         try {
-            const res = await axios.post(
-                `${JOB_API_END_POINT}/post`,
+            const res = await axiosInstance.post(
+                `/job/post`,
                 formData,
                 {
                     headers: {
@@ -175,7 +174,7 @@ const CreateJob = () => {
                                     required
                                     className="w-full p-2 border rounded-md"
                                 >
-                                   
+
                                 </Input>
                             </div>
 

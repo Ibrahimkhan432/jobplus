@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
-import axios from "axios";
-import { COMPANY_API_END_POINT } from "@/utils/constant";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/global/Navbar";
 import { Button } from "@/components/ui/button";
 import { setSingleCompany } from "../../../redux/companySlice";
+import axiosInstance from "@/utils/axios";
 
 const CreateCompany = () => {
     const [companyName, setCompanyName] = useState("");
@@ -22,8 +21,8 @@ const CreateCompany = () => {
         }
 
         try {
-            const res = await axios.post(
-                `${COMPANY_API_END_POINT}/register`,
+            const res = await axiosInstance.post(
+                `/company/register`,
                 { companyName },
                 {
                     headers: {
