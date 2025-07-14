@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setSingleCompany } from "../../redux/companySlice";
 import { toast } from "sonner";
 import axiosInstance from "@/utils/axios";
+import { setSingleCompany } from "../../redux/companySlice";
 
 const useGetCompanyById = (companyId: string) => {
   const [loading, setLoading] = useState(true);

@@ -16,7 +16,7 @@ const useGetAllCompanies = () => {
                         'Content-Type': 'application/json'
                     }
                 });
-                console.log(res.data);
+                console.log("all companies from hook", res.data);
 
                 if (res.data.success) {
                     dispatch(setCompanies(res.data.companies));

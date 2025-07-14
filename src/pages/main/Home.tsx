@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     if (user?.role === "recruiter") {
-      navigate("/admin/companies")
+      navigate("/recruiter/dashboard")
     }
   }, [])
 

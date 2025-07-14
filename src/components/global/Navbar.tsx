@@ -82,7 +82,7 @@ export default function Navbar() {
           {user?.role === "recruiter" ? (
             <>
               <Link
-                to="/admin/companies"
+                to="/recruiter/dashboard"
                 className="px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white/20 hover:text-white text-white"
               >
                 Companies
@@ -260,7 +260,7 @@ export default function Navbar() {
             {user?.role === "recruiter" ? (
               <>
                 <Link
-                  to="/admin/companies"
+                  to="recruiter/dashboard"
                   className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white/20 text-white"
                   onClick={() => setIsOpen(false)}
                 >

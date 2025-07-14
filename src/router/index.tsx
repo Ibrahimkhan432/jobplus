@@ -6,14 +6,18 @@ import Jobs from "@/pages/jobs/Jobs";
 import Browser from "@/components/Browser";
 import Profile from "@/pages/profile/Profile";
 import JobDescription from "@/components/JobDescription";
-import Companies from "@/pages/admin/Companies";
-import CreateCompany from "@/pages/admin/CreateCompany";
-import CompanySetup from "@/pages/admin/CompanySetup";
-import AdminJobs from "@/pages/admin/AdminJobs";
-import CreateJob from "@/pages/admin/CreateJob";
-import JobApplicants from "@/pages/admin/JobApplicants";
+// import Companies from "@/pages/admin/Companies";
+// import CreateCompany from "@/pages/admin/CreateCompany";
+// import CompanySetup from "@/pages/admin/CompanySetup";
+// import AdminJobs from "@/pages/admin/AdminJobs";
+// import CreateJob from "@/pages/admin/CreateJob";
+// import JobApplicants from "@/pages/admin/JobApplicants";
 import ProtectedRoute from "@/router/ProtectedRoute";
 import { createBrowserRouter, Outlet } from "react-router-dom";
+import RecruiterDashboard from "@/pages/recruiter/RecruiterDashboard";
+import CreateJob from "@/pages/recruiter/CreateJob";
+import JobApplicants from "@/pages/recruiter/JobApplicants";
+import CompanySetup from "@/pages/recruiter/CompanySetup";
 
 const router = createBrowserRouter([
   // Public Routes
@@ -25,23 +29,40 @@ const router = createBrowserRouter([
   { path: "/browser", element: <Browser /> },
   { path: "/profile", element: <Profile /> },
 
-  // Admin Protected Routes (all children protected)
+
   {
-    path: "/admin",
+    path: "/recruiter",
     element: (
       <ProtectedRoute allowedRoles={["recruiter"]}>
         <Outlet />
       </ProtectedRoute>
     ),
     children: [
-      { path: "companies", element: <Companies /> },
-      { path: "companies/create", element: <CreateCompany /> },
-      { path: "companies/:id", element: <CompanySetup /> },
-      { path: "jobs", element: <AdminJobs /> },
-      { path: "jobs/create", element: <CreateJob /> },
+      { path: "dashboard", element: <RecruiterDashboard /> },
+      { path: "dashboard/create", element: <CreateJob /> },
+      { path: "dashboard/:id", element: <CompanySetup /> },
       { path: "jobs/:id/applicants", element: <JobApplicants /> },
-    ],
-  },
-]);
+
+    ]
+  }
+])
+
+// Admin Protected Routes (all children protected)
+// {
+//   path: "/admin",
+//   element: (
+//     <ProtectedRoute allowedRoles={["recruiter"]}>
+//       <Outlet />
+//     </ProtectedRoute>
+//   ),
+//   children: [
+//     { path: "companies", element: <Companies /> },
+//     { path: "companies/create", element: <CreateCompany /> },
+//     { path: "companies/:id", element: <CompanySetup /> },
+//     { path: "jobs", element: <AdminJobs /> },
+//     { path: "jobs/create", element: <CreateJob /> },
+//     { path: "jobs/:id/applicants", element: <JobApplicants /> },
+//   ],
+// },
 
 export default router;
