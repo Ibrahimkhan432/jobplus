@@ -71,9 +71,9 @@ const JobApplicants = () => {
             className="cursor-pointer"
             onClick={() => navigate("/recruiter/dashboard")}
           />
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-black">
             Applicants for {jobTitle}
-            <span className="ml-2">{applicants?.applications?.length}</span>
+            <span className="ml-2 text-blue-800">( {applicants?.applications?.length} )</span>
           </h1>
         </div>
 

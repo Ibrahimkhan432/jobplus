@@ -17,7 +17,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import RecruiterDashboard from "@/pages/recruiter/RecruiterDashboard";
 import CreateJob from "@/pages/recruiter/CreateJob";
 import JobApplicants from "@/pages/recruiter/JobApplicants";
-import CompanySetup from "@/pages/recruiter/CompanySetup";
+import EditJob from "@/pages/recruiter/EditJob";
 
 const router = createBrowserRouter([
   // Public Routes
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <RecruiterDashboard /> },
       { path: "dashboard/create", element: <CreateJob /> },
-      { path: "dashboard/:id", element: <CompanySetup /> },
+      { path: "dashboard/:id", element: <EditJob /> },
       { path: "jobs/:id/applicants", element: <JobApplicants /> },
 
     ]
