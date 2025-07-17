@@ -85,13 +85,13 @@ export default function Navbar() {
                 to="/recruiter/dashboard"
                 className="px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white/20 hover:text-white text-white"
               >
-                Companies
+               My Companies
               </Link>
               <Link
-                to="/admin/jobs"
+                to="/recruiter/dashboard"
                 className="px-4 py-2 rounded-md text-md font-medium transition-colors hover:bg-white/20 hover:text-white text-white"
               >
-                Jobs
+               My Jobs
               </Link>
             </>
           ) : (
@@ -213,7 +213,7 @@ export default function Navbar() {
               <Link to="/login">
                 <Button
                   variant="ghost"
-                  className="border-2 cursor-pointer text-white md:flex hidden"
+                  className="cursor-pointer text-white md:flex hidden"
                 >
                   Login
                 </Button>
@@ -221,9 +221,9 @@ export default function Navbar() {
               <Link to="/signup">
                 <Button
                   variant="ghost"
-                  className="border-none text-blue-600 cursor-pointer bg-white md:flex hidden"
+                  className="px-3 py-2d text-sm font-medium  text-white cursor-pointer md:flex hidden"
                 >
-                  Sign Up
+                  Join Now
                 </Button>
               </Link>
             </>
@@ -298,18 +298,17 @@ export default function Navbar() {
               >
                 <Link
                   to="/login"
-                  className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white text-white"
+                  className="px-3 py-2 text-sm font-medium transition-colors hover:bg-white text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700"
+                  className="px-3 py-2d text-md font-medium  text-white "
                   onClick={() => setIsOpen(false)}
                 >
-                  Sign Up
-                </Link>
+                  Join Now                </Link>
               </div>
             )}
           </div>

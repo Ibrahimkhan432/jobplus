@@ -24,7 +24,6 @@ export default function Login() {
   const { loading, user } = useSelector((store: any) => store.auth);
 
   useEffect(() => {
-    // Only redirect if user is authenticated (e.g., has a valid token and user object)
     if (user && user.email) {
       navigate("/", { replace: true });
     }

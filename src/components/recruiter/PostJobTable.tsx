@@ -14,6 +14,7 @@ import {
     ClockIcon,
     User,
 } from "lucide-react"
+import axiosInstance from "@/utils/axios"
 
 function PostJobTable() {
     const navigate = useNavigate()
@@ -21,17 +22,35 @@ function PostJobTable() {
     const recruiterJobs = useSelector((store: any) => store.job.allRecruiterJobs)
     const searchJobByName = useSelector((store: any) => store.job.searchJobByName)
     const [filteredJobs, setFilteredJobs] = useState(recruiterJobs)
+    const [allMyJobs, setAllMyJobs] = useState([]);
+
+    useEffect(() => {
+        const fetchMyJobs = async () => {
+            try {
+                const res = await axiosInstance.get(`/job/myJobs`, {
+                    withCredentials: true,
+                });
+                if (res.data.success) {
+                    setAllMyJobs(res.data.jobs);
+                    setFilteredJobs(res.data.jobs);
+                }
+            } catch (error) {
+                console.error("Failed to fetch recruiter jobs", error);
+            }
+        };
+        fetchMyJobs();
+    }, []);
 
     useEffect(() => {
         if (searchJobByName) {
-            const filtered = recruiterJobs.filter((job: any) =>
-                job.title.toLowerCase().includes(searchJobByName.toLowerCase()),
-            )
-            setFilteredJobs(filtered)
+            const filtered = allMyJobs.filter((job: any) =>
+                job.title.toLowerCase().includes(searchJobByName.toLowerCase())
+            );
+            setFilteredJobs(filtered);
         } else {
-            setFilteredJobs(recruiterJobs)
+            setFilteredJobs(allMyJobs);
         }
-    }, [searchJobByName, recruiterJobs])
+    }, [searchJobByName, allMyJobs]);
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("en-US", {

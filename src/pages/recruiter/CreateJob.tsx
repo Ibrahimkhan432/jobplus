@@ -13,10 +13,10 @@ import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 
 const CreateJob = () => {
     const navigate = useNavigate();
-    useGetAllCompanies()    
+    useGetAllCompanies()
     const { companies } = useSelector((store: any) => store.company);
     // console.log("comapnies from fcreate job page",companies);
-    
+
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -184,21 +184,33 @@ const CreateJob = () => {
 
                             <div className="space-y-2">
                                 <Label htmlFor="company">Company</Label>
-                                <select
-                                    id="company"
-                                    name="company"
-                                    value={formData.company}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full p-2 border rounded-md"
-                                >
-                                    <option value="">Select Company</option>
-                                    {companies?.map((company: any) => (
-                                        <option key={company._id} value={company._id}>
-                                            {company.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                {companies && companies.length > 0 ? (
+                                    <select
+                                        id="company"
+                                        name="company"
+                                        value={formData.company}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="w-full p-2 border rounded-md"
+                                    >
+                                        <option value="">Select Company</option>
+                                        {companies.map((company: any) => (
+                                            <option key={company._id} value={company._id}>
+                                                {company.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <Input
+                                        id="company"
+                                        name="company"
+                                        value={formData.company}
+                                        onChange={handleInputChange}
+                                        required
+                                        placeholder="Enter company name"
+                                        className="w-full"
+                                    />
+                                )}
                             </div>
                         </div>
 

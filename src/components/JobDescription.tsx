@@ -2,7 +2,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setSingleJob } from "../../redux/jobSlice"
 import { toast } from "sonner"
@@ -12,7 +12,6 @@ import {
   CalendarIcon,
   UsersIcon,
   BriefcaseIcon,
-  DollarSignIcon,
   ClockIcon,
   CheckCircleIcon,
   BuildingIcon,
@@ -26,12 +25,11 @@ function JobDescription() {
   const dispatch = useDispatch()
   const { user } = useSelector((store: any) => store.auth)
   const { singleJob } = useSelector((store: any) => store.job)
-  const applications = singleJob?.applications
 
-  const isInitiallyApplied =
-    applications?.some(
-      (application: any) => typeof application.applicant === "string" && application.applicant === user._id,
-    ) || false
+  const applications = singleJob?.applications
+  // const isInitiallyApplied = applications?.some((a: any) => a.applicant?._id === user?._id) || false;
+  const isInitiallyApplied = applications?.map((a: any) => a.applicant).includes(user?._id) || false;
+
 
   const [isApplied, setIsApplied] = useState(isInitiallyApplied)
 
@@ -96,9 +94,17 @@ function JobDescription() {
       </div>
     )
   }
+  const formaRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (formaRef.current) {
+      formaRef.current.scrollIntoView({ behavior: "auto", block: "start" });
+    }
+  }, [formaRef.current]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div
+      ref={formaRef}
+      className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 space-y-6">
         {/* Header Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
@@ -142,9 +148,8 @@ function JobDescription() {
                 onClick={applyJobHandler}
                 disabled={isApplied}
                 size="lg"
-                className={`px-8 py-3 text-lg font-semibold cursor-pointer text-white ${
-                  isApplied ? "bgMian-gradient hover:bg-green-600 cursor-not-allowed" : "bgMain-gradient hover:bg-blue-700"
-                }`}
+                className={`px-8 py-3 text-lg font-semibold cursor-pointer text-white ${isApplied ? "bgMian-gradient hover:bg-green-600 cursor-not-allowed" : "bgMain-gradient hover:bg-blue-700"
+                  }`}
               >
                 {isApplied ? (
                   <>
@@ -242,9 +247,8 @@ function JobDescription() {
             onClick={applyJobHandler}
             disabled={isApplied}
             size="lg"
-            className={`px-8 py-3 text-lg font-semibold text-white ${
-              isApplied ? "bgMain-gradient hover:bg-green-600 cursor-not-allowed" : "bgMain-gradient hover:bg-blue-700"
-            }`}
+            className={`px-8 py-3 text-lg font-semibold text-white ${isApplied ? "bgMain-gradient hover:bg-green-600 cursor-not-allowed" : "bgMain-gradient hover:bg-blue-700"
+              }`}
           >
             {isApplied ? (
               <>

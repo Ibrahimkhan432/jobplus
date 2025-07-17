@@ -7,15 +7,15 @@ function Hero() {
     <div className="min-h-screen">
       {/* Hero Section with Background Image and Integrated Navbar */}
       <section
-        className=" bg-cover bg-center h-[700px]"
+        className=" bg-cover bg-center h-[500px]"
         style={{
           backgroundImage: "url('/placeholder.svg?height=500&width=2000')",
           backgroundBlendMode: "overlay",
         }}
       >
-        <div className="absolute inset-0 min-h-screen  bgMain-gradient"></div>
+        <div className="absolute inset-0 min-h-screen  bgMain-gradient justify-content-center"></div>
         <div className="relative z-10 h-full flex flex-col ">
-          <div className="flex-1 container mx-auto px-4 flex flex-col items-center justify-center text-center">
+          <div className="flex-1 container mx-auto px-4 flex flex-col items-center justify-center text-center ">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">
               Find Your Dream Job Today
             </h1>
