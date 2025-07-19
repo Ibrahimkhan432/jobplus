@@ -26,12 +26,17 @@ function JobDescription() {
   const { user } = useSelector((store: any) => store.auth)
   const { singleJob } = useSelector((store: any) => store.job)
 
-  const applications = singleJob?.applications
-  // const isInitiallyApplied = applications?.some((a: any) => a.applicant?._id === user?._id) || false;
-  const isInitiallyApplied = applications?.map((a: any) => a.applicant).includes(user?._id) || false;
+  // const applications = singleJob?.applications
+  // // const isInitiallyApplied = applications?.some((a: any) => a.applicant?._id === user?._id) || false;
+  // const isInitiallyApplied = applications?.map((a: any) => a.applicant).includes(user?._id) || false;
 
-
-  const [isApplied, setIsApplied] = useState(isInitiallyApplied)
+  const isApplied =
+    singleJob?.applications?.some(
+      (application: any) =>
+        (typeof application.applicant === "string"
+          ? application.applicant
+          : application.applicant?._id) === user?._id
+    ) || false;
 
   const applyJobHandler = async () => {
     try {
@@ -39,13 +44,14 @@ function JobDescription() {
         withCredentials: true,
       })
       if (res.data.success) {
-        setIsApplied(true)
-        const updatedSingleJob = {
-          ...singleJob,
-          application: [...singleJob.applications, { applicant: user?._id }],
-        }
-        dispatch(setSingleJob(updatedSingleJob))
         toast.success("Applied successfully")
+        // Refetch job to update applications
+        const jobRes = await axiosInstance.get(`/job/get/${jobId}`, {
+          withCredentials: true,
+        })
+        if (jobRes.data.success) {
+          dispatch(setSingleJob(jobRes.data.job))
+        }
       }
     } catch (error: any) {
       console.log("error in apply job", error)
@@ -74,11 +80,6 @@ function JobDescription() {
         })
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job))
-          res.data.job.applications.some(
-            (application: any) =>
-              (typeof application.applicant === "string" ? application.applicant : application.applicant?._id) ===
-              user?._id,
-          )
         }
       } catch (error) {
         console.log("error in get single job", error)

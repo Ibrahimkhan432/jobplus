@@ -32,20 +32,26 @@ function AppliedJobTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-        {
-                        allAppliedJobs.length <= 0 ? <span>You haven't applied any job yet.</span> : allAppliedJobs.map((appliedJob:any) => (
-                            <TableRow key={appliedJob._id}>
-                                <TableCell>{appliedJob?.createdAt?.split("T")[0]}</TableCell>
-                                <TableCell>{appliedJob.job?.title}</TableCell>
-                                <TableCell>{appliedJob.job?.company?.name}</TableCell>
-                                <TableCell className="text-right"><Badge className={`${appliedJob?.status === "rejected" ? 'text-red-400' : appliedJob.status === 'pending' ? 'text-white' : 'text-white'}`}>{appliedJob.status.toUpperCase()}</Badge></TableCell>
-                            </TableRow>
-                        ))
-                    }
-
-
-
-
+          {allAppliedJobs && allAppliedJobs.length > 0 ? (
+            allAppliedJobs.map((appliedJob: any) => (
+              <TableRow key={appliedJob._id}>
+                <TableCell>{appliedJob?.createdAt?.split("T")[0]}</TableCell>
+                <TableCell>{appliedJob.job?.title}</TableCell>
+                <TableCell>{appliedJob.job?.company?.name}</TableCell>
+                <TableCell className="text-right">
+                  <Badge className={`${appliedJob?.status === "rejected" ? 'text-red-400' : 'text-white'}`}>
+                    {appliedJob.status.toUpperCase()}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center text-gray-500">
+                You haven't applied any job yet.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

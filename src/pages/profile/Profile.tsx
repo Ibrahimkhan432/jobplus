@@ -11,7 +11,7 @@ import { setUser } from "../../../redux/authSlice";
 import { Progress } from "@/components/ui/progress";
 import axiosInstance from "@/utils/axios";
 
-  const isApplied = true;
+const isApplied = true;
 
 function Profile() {
   useGetAppliedJobs();
@@ -75,9 +75,23 @@ function Profile() {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     setForm(prev => ({ ...prev, file: e.target.files![0] }));
+  //   }
+  // };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setForm(prev => ({ ...prev, file: e.target.files![0] }));
+      const file = e.target.files[0];
+      const allowedExtensions = ["pdf"];
+      const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
+      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+        toast.error("Only PDF files are allowed for resume upload.");
+        return;
+      }
+
+      setForm(prev => ({ ...prev, file }));
     }
   };
 
@@ -240,7 +254,9 @@ function Profile() {
               </span>
               <span className="text-xs font-medium text-gray-700">{filledFields}/{totalFields} fields</span>
             </div>
-            <Progress value={completion} className={isProfileComplete ? 'bg-green-500' : 'bg-yellow-400'} />
+            <div className={isProfileComplete ? 'bg-green-500 rounded-full' : 'bg-yellow-400 rounded-full'}>
+              <Progress value={completion} />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

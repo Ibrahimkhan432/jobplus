@@ -85,13 +85,13 @@ export default function Navbar() {
                 to="/recruiter/dashboard"
                 className="px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-white/20 hover:text-white text-white"
               >
-               My Companies
+                My Companies
               </Link>
               <Link
                 to="/recruiter/dashboard"
                 className="px-4 py-2 rounded-md text-md font-medium transition-colors hover:bg-white/20 hover:text-white text-white"
               >
-               My Jobs
+                My Jobs
               </Link>
             </>
           ) : (

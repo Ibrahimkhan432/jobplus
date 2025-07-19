@@ -15,7 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoadnig } from "./../../../../redux/authSlice";
+import { setLoadnig, setUser } from "./../../../../redux/authSlice";
 import { Loader } from "lucide-react";
 import axiosInstance from "@/utils/axios";
 
@@ -24,14 +24,10 @@ export default function Signup() {
     fullName: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    // confirmPassword: "",
     phoneNumber: "",
     role: "",
   });
-
-
-  const [error, setError] = useState<string | null>(null);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((store: any) => store.auth);
@@ -41,44 +37,26 @@ export default function Signup() {
     const { name, value } = e.target;
     setInput((input) => ({ ...input, [name]: value }));
   };
-
-  // const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     setInput((input) => ({ ...input, file }));
-  //   }
-  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    //password confirmation
-    if (input.password !== input.confirmPassword) {
-      setError("Password do not match");
+    const payload = {
+      fullName: input.fullName,
+      email: input.email,
+      password: input.password,
+      phoneNumber: input.phoneNumber,
+      role: input.role,
+    };
 
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("fullName", input.fullName);
-    formData.append("email", input.email);
-    formData.append("password", input.password);
-    formData.append("confirmPassword", input.confirmPassword);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("role", input.role);
-    // if (input.file) {
-    //   formData.append("file", input.file);
-    // }
-    console.log("Signup submitted:", formData);
-    setError(null);
     try {
       dispatch(setLoadnig(true));
-      const res = await axiosInstance.post(`/user/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const res = await axiosInstance.post(`/user/register`, payload, {
+        headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
       if (res.data.success) {
+        localStorage.setItem("token", res.data.token)
+        dispatch(setUser(res.data.user));
         toast.success(res.data.message);
         navigate("/");
         dispatch(setLoadnig(false));
@@ -146,7 +124,7 @@ export default function Signup() {
                     required
                   />
                 </div>
-                <div className="space-y-2 relative">
+                {/* <div className="space-y-2 relative">
                   <Label htmlFor="password">Confirm Password</Label>
                   <Input
                     className="border-1 border-gray-400"
@@ -159,8 +137,7 @@ export default function Signup() {
                     required
                   />
                   {error && <p className="text-red-600 text-sm">{error}</p>}
-
-                </div>
+                </div> */}
 
                 <div className="space-y-2">
                   <Label htmlFor="phoneNumber">Phone Number</Label>
