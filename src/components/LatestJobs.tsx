@@ -21,7 +21,7 @@ function LatestJobs() {
           </div>
           <div>
             <Link to="/jobs">
-              <Button className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 border border-blue-200 shadow-sm">
+              <Button className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-500 cursor-pointer border border-blue-200 shadow-sm">
                 View All Jobs
               </Button>
             </Link>

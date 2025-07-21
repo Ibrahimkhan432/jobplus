@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { useState } from "react";
 
 const filterData = [
   {
@@ -33,59 +32,55 @@ const filterData = [
   },
 ];
 
+interface FilterCardProps {
+  onFilterChange: (filters: { [key: string]: string }) => void;
+}
 
+function FilterCard({ onFilterChange }: FilterCardProps) {
+  const [selectedFilters, setSelectedFilters] = useState<{ [key: string]: string }>({});
 
-function FilterCard() {
+  const handleRadioClick = (filterType: string, value: string) => {
+    // If already selected, remove filter
+    const isSelected = selectedFilters[filterType] === value;
+    const updatedFilters = { ...selectedFilters };
+    if (isSelected) {
+      delete updatedFilters[filterType];
+    } else {
+      updatedFilters[filterType] = value;
+    }
+    setSelectedFilters(updatedFilters);
+    onFilterChange(updatedFilters);
+  };
 
-  const [selectedValue, setSelectedValue] = useState();
-
-  const changeHandler = (value: any) => {
-    setSelectedValue(value);
-  }
-
-useEffect(() => {
-console.log(selectedValue)
-}, [selectedValue])
-  
   return (
     <div className="border border-gray-300 rounded-lg shadow-md overflow-hidden">
-      {/* Top Gradient */}
       <div className="h-2 w-full bgMain-gradient" />
-
-      {/* Filter Content */}
       <div className="p-4">
         <h2 className="text-xl font-bold text-gray-800 mb-2">Filter Jobs</h2>
         <hr className="mb-4" />
-
-        <RadioGroup
-        onValueChange={changeHandler}
-        value={selectedValue}
-        >
-          {filterData.map((data, index) => (
-            <div key={index} className="mb-6">
-              <h3 className="font-semibold text-lg text-gray-700 mb-2">
-                {data.filterType}
-              </h3>
-              <div className="flex flex-col gap-2">
-                {data.array.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <RadioGroupItem
-                      value={item}
-                      id={`${data.filterType}-${item}`}
-                      className="cursor-pointer focus-visible:ring-4 ring-blue-600 focus:bg-blue-600"
-                    />
-                    <label
-                      htmlFor={`${data.filterType}-${item}`}
-                      className="text-sm text-gray-700"
-                    >
-                      {item}
-                    </label>
-                  </div>
-                ))}
-              </div>
+        {filterData.map((data, index) => (
+          <div key={index} className="mb-6">
+            <h3 className="font-semibold text-lg text-gray-700 mb-2">{data.filterType}</h3>
+            <div className="flex flex-col gap-2">
+              {data.array.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name={data.filterType}
+                    id={`${data.filterType}-${item}`}
+                    checked={selectedFilters[data.filterType] === item}
+                    onClick={() => handleRadioClick(data.filterType, item)}
+                    readOnly
+                    className="cursor-pointer"
+                  />
+                  <label htmlFor={`${data.filterType}-${item}`} className="text-sm text-gray-700 cursor-pointer">
+                    {item}
+                  </label>
+                </div>
+              ))}
             </div>
-          ))}
-        </RadioGroup>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
 import CategoryCarousel from "./CategoryCarousel";
+import ProfileCompletionBanner from "./global/ProfileCompletionBanner";
 import SearchBox from "./search-box";
 import { Button } from "./ui/button";
 
 function Hero() {
   return (
     <div className="min-h-screen">
+      <ProfileCompletionBanner />
       {/* Hero Section with Background Image and Integrated Navbar */}
       <section
         className=" bg-cover bg-center h-[500px]"

@@ -4,16 +4,26 @@ import { Avatar, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { useNavigate } from 'react-router-dom';
 
+function highlightText(text: string, search: string) {
+  if (!search) return text;
+  const regex = new RegExp(`(${search})`, 'gi');
+  return text.split(regex).map((part, i) =>
+    regex.test(part) ? (
+      <span key={i} className="bg-yellow-200 text-black">{part}</span>
+    ) : (
+      part
+    )
+  );
+}
 
-const JobCard = ({ job }: any) => {
-  // console.log("job", job);
+const JobCard = ({ job, searchTerm }: any) => {
   const navigate = useNavigate();
 
   const daysAgoFunction = (mongodbTime: any) => {
     const createdAt = new Date(mongodbTime);
     const daysAgo = Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
-    return daysAgo
-  }
+    return daysAgo;
+  };
 
   return (
     <div
@@ -28,7 +38,6 @@ const JobCard = ({ job }: any) => {
                 ? "1 day ago"
                 : `${daysAgoFunction(job?.createdAt)} days ago`
           }
-
         </p>
         <Button variant="outline" size="icon" className="rounded-full">
           <Bookmark className="w-4 h-4" />
@@ -46,30 +55,22 @@ const JobCard = ({ job }: any) => {
       </div>
 
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-gray-800 w-full">{job?.title}</h3>
+        <h3 className="text-lg font-bold text-gray-800 w-full">
+          {highlightText(job?.title, searchTerm)}
+        </h3>
         <p className="text-sm text-gray-600 mt-1">
-          {job?.description}
+          {highlightText(job?.description, searchTerm)}
         </p>
       </div>
 
       <div className="flex flex-wrap gap-2 mt-2">
-        <Badge className="text-white font-medium border-primary bg-white text-primary">  Experience: {typeof job?.experience === "number" && job.experience >= 0 ? job.experience : "0"}
+        <Badge className="text-white font-medium border-primary bg-white text-primary">
+          Experience: {typeof job?.experience === "number" && job.experience >= 0 ? job.experience : "0"}
         </Badge>
         <Badge className="text-white font-medium border-primary bg-white text-primary"> Position: {job?.position}</Badge>
         <Badge className="text-white font-medium border-primary bg-white text-primary">{job?.jobType}</Badge>
-        <Badge className="text-white font-medium border-primary bg-white text-primary">{job?.salary}</Badge>
+        <Badge className="text-white font-medium border-primary bg-white text-primary">Rs: {job?.salary}</Badge>
       </div>
-
-      {/* Action Buttons */}
-      {/* <div className="flex items-center gap-3 mt-6">
-        <Button
-          onClick={() => navigate(`/description/${job?._id}`)}
-          variant="outline"
-          className="bg-primary cursor-pointer text-white text-sm font-medium hover:opacity-90 w-full"
-        >
-          View Details
-        </Button>
-      </div> */}
     </div>
   );
 };

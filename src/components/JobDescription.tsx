@@ -105,8 +105,8 @@ function JobDescription() {
   return (
     <div
       ref={formaRef}
-      className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 space-y-6">
+      className="min-h-screen bg-gray-50 py-4">
+      <div className="max-w-4xl mx-auto px-4 space-y-2">
         {/* Header Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
           <div className="flex flex-col lg:flex-row items-start justify-between gap-6">
@@ -166,7 +166,7 @@ function JobDescription() {
         </div>
 
         {/* Stats Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -192,49 +192,23 @@ function JobDescription() {
 
         {/* Job Description Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-2">
             <FileTextIcon className="h-6 w-6 text-blue-600" />
             <h2 className="text-2xl font-bold text-gray-900">Job Description</h2>
           </div>
 
           <div className="prose max-w-none">
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">About this role</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">About this role</h3>
               <p className="text-gray-600 leading-relaxed text-base">{singleJob?.description}</p>
             </div>
 
             {singleJob?.requirement && (
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Requirements</h3>
+              <div className="mb-2">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Requirements</h3>
                 <p className="text-gray-600 leading-relaxed text-base">{singleJob?.requirement}</p>
               </div>
             )}
-
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Key Responsibilities</h3>
-              <ul className="space-y-3 text-gray-600">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Collaborate with designers to translate Figma mockups into working UI</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Write clean, maintainable, and efficient code using React and TailwindCSS</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Ensure application responsiveness and performance across devices</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Participate in regular code reviews and agile team activities</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Good understanding of Git and deployment workflows</span>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
 
