@@ -11,14 +11,7 @@ import {
 } from "./ui/table";
 
 function AppliedJobTable() {
-
-  // get the api call here
-  // const getall   = fetch();
-  // dispatch(setALlaplicationdata(data))
-  // show on the ui 
   const allAppliedJobs = useSelector((store: any) => store.job.allAppliedJobs);
-  // console.log("allapplied jobs", allAppliedJobs);
-
   return (
     <div>
       <Table className="w-full  border border-gray-200 rounded-2xl shadow-sm rounded-lg">

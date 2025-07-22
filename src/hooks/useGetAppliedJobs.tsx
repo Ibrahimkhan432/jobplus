@@ -11,7 +11,6 @@ const useGetAppliedJobs = () => {
         const res = await axiosInstance.get(`/application/get`, {
           withCredentials: true,
         });
-        // console.log("res", res);
         if (res.data.success) {
           dispatch(setAllAppliedJobs(res.data.application));
         }

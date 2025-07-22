@@ -40,6 +40,7 @@ const EditJob = () => {
         navigate("/recruiter/dashboard");
       }
     } catch (error) {
+      console.log("error while updating job",error)
       toast.error("Job update failed!");
     }
   };

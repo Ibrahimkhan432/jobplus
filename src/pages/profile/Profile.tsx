@@ -131,6 +131,7 @@ function Profile() {
         setEditMode(false);
       }
     } catch (error) {
+      console.log("error while updating profile",error)
       toast.error("Something went wrong while updating profile");
     } finally {
       setLoading(false);

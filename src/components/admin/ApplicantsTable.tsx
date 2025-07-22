@@ -20,7 +20,7 @@ const ApplicantsTable = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log("error in job applicantTable");
+      console.log("error in job applicantTable",error);
 
     }
   }

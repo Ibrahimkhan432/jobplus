@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 function ProfileCompletionBanner() {
     const { user } = useSelector((store: any) => store.auth);
 
+    if (!user) return null;
+
     const profileFields = [
         user?.fullName,
         user?.email,

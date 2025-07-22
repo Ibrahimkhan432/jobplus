@@ -2,7 +2,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setSingleJob } from "../../redux/jobSlice"
 import { toast } from "sonner"
@@ -25,10 +25,6 @@ function JobDescription() {
   const dispatch = useDispatch()
   const { user } = useSelector((store: any) => store.auth)
   const { singleJob } = useSelector((store: any) => store.job)
-
-  // const applications = singleJob?.applications
-  // // const isInitiallyApplied = applications?.some((a: any) => a.applicant?._id === user?._id) || false;
-  // const isInitiallyApplied = applications?.map((a: any) => a.applicant).includes(user?._id) || false;
 
   const isApplied =
     singleJob?.applications?.some(

@@ -8,15 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllApplicants } from "../../../redux/applicationSlice";
 import axiosInstance from "@/utils/axios";
 
-interface Applicant {
-  _id: string;
-  name: string;
-  email: string;
-  resume: string;
-  status: string;
-  appliedAt: string;
-}
-
 const JobApplicants = () => {
   const params = useParams();
   const navigate = useNavigate();

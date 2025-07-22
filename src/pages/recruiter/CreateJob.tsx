@@ -15,7 +15,6 @@ const CreateJob = () => {
     const navigate = useNavigate();
     useGetAllCompanies()
     const { companies } = useSelector((store: any) => store.company);
-    // console.log("comapnies from fcreate job page",companies);
 
     const [formData, setFormData] = useState({
         title: "",

@@ -25,7 +25,6 @@ interface Category {
   icon: React.ReactNode
   count: number
 }
-import { useNavigate } from "react-router-dom";
 
 
 export default function CategoryCarousel() {
@@ -77,13 +76,6 @@ export default function CategoryCarousel() {
       })
     }
   }
-
-  const navigate = useNavigate();
-
-  const handleCategoryClick = (categoryId: string) => {
-    navigate(`/browser?category=${categoryId}`);
-  };
-
 
 
 
