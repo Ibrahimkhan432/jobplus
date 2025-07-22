@@ -9,7 +9,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { useDispatch } from "react-redux";
 
 interface Admin {
   _id: string;
@@ -22,7 +21,6 @@ interface Admin {
 
 function AdminTableDetail() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAdmins, setFilteredAdmins] = useState<Admin[]>([]);
 
