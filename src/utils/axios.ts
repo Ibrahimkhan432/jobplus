@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-    baseURL:  import.meta.env.VITE_BACKEND_URL,
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    // baseURL: "http://localhost:3000",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -26,8 +27,8 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if(error){
-      }
+        if (error) {
+        }
         return Promise.reject(error);
     }
 );
