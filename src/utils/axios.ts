@@ -2,13 +2,14 @@ import axios from "axios";
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-    // baseURL: "http://localhost:3000",
+    baseURL:  import.meta.env.VITE_BACKEND_URL,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
     },
 });
+
+console.log(import.meta.env.VITE_BACKEND_URL)
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
@@ -27,8 +28,8 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error) {
-        }
+      if(error){
+      }
         return Promise.reject(error);
     }
 );
