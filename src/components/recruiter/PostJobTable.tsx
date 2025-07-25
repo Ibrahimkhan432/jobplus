@@ -28,7 +28,7 @@ function PostJobTable() {
         const fetchMyJobs = async () => {
             try {
                 const res = await axiosInstance.get(`/job/myJobs`, {
-                    withCredentials: true,
+                    // withCredentials: true,
                 });
                 if (res.data.success) {
                     setAllMyJobs(res.data.jobs);
