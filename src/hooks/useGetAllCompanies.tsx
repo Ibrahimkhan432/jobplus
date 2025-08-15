@@ -11,7 +11,7 @@ const useGetAllCompanies = () => {
         const fetchCompanies = async () => {
             try {
                 const res = await axiosInstance.get(`/company/get`, {
-                    withCredentials: true,
+                    withCredentials: false,
                     headers: {
                         'Content-Type': 'application/json'
                     }

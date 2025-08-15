@@ -43,7 +43,7 @@ function JobDescription() {
         toast.success("Applied successfully")
         // Refetch job to update applications
         const jobRes = await axiosInstance.get(`/job/get/${jobId}`, {
-          withCredentials: true,
+          withCredentials: false,
         })
         if (jobRes.data.success) {
           dispatch(setSingleJob(jobRes.data.job))
@@ -72,7 +72,7 @@ function JobDescription() {
     const fetchSingleJob = async () => {
       try {
         const res = await axiosInstance.get(`/job/get/${jobId}`, {
-          withCredentials: true,
+          withCredentials: false,
         })
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job))
@@ -82,7 +82,7 @@ function JobDescription() {
       }
     }
     fetchSingleJob()
-  }, [dispatch, jobId, user?._id])
+  }, [dispatch, jobId])
 
   if (!singleJob) {
     return (

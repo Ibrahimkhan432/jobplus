@@ -15,7 +15,7 @@ const useGetCompanyById = (companyId: string) => {
       try {
         setLoading(true);
         const res = await axiosInstance.get(`/company/get/${companyId}`, {
-          withCredentials: true,
+          withCredentials: false,
         });
         console.log("res useget for update ", res.data);
 

@@ -15,7 +15,7 @@ const useGetJobById = (jobId: string) => {
       try {
         setLoading(true);
         const res = await axiosInstance.get(`/job/get/${jobId}`, {
-          withCredentials: true,
+          withCredentials: false,
         });
         console.log("res useget for update ", res.data);
 

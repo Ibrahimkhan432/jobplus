@@ -10,7 +10,7 @@ const useGetAllJobs = () => {
     const fetchAllJobs = async () => {
       try {
         const res = await axiosInstance.get(`/job/get?keyword=${searchedQuery}`, {
-          withCredentials: true,
+          withCredentials: false,
         });
         if (res.data.success) {
           dispatch(setAllJobs(res.data.jobs));
@@ -20,6 +20,6 @@ const useGetAllJobs = () => {
       }
     };
     fetchAllJobs();
-  }, []);
+  }, [searchedQuery]);
 };
 export default useGetAllJobs;

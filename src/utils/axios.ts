@@ -3,7 +3,7 @@ import axios from "axios";
 // Create an Axios instance
 const axiosInstance = axios.create({
     baseURL:  import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true,
+    withCredentials: false,
     headers: {
         "Content-Type": "application/json",
     },
@@ -14,9 +14,8 @@ console.log(import.meta.env.VITE_BACKEND_URL)
 // Request interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
-
         const token = localStorage.getItem("token");
-        if (token) {
+        if (token && config.withCredentials !== false) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
