@@ -42,6 +42,7 @@ export default function Login() {
       dispatch(setLoadnig(true));
       const res = await axiosInstance.post(`/user/login`, input);
       if (res.data.success) {
+        localStorage.setItem("token", res.data.token)
         dispatch(setUser(res.data.user));
         toast.success("Login successful");
         navigate("/");

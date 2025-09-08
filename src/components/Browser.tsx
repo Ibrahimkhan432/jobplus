@@ -12,9 +12,14 @@ function Browser() {
   const { allJobs } = useSelector((store: any) => store.job)
   const dispatch = useDispatch();
 
+  console.log("Browser component - allJobs:", allJobs);
+  console.log("Browser component - allJobs length:", allJobs?.length);
+  console.log("Browser component - localStorage available:", typeof window !== 'undefined' && window.localStorage);
+  console.log("Browser component - token:", localStorage.getItem("token"));
+
   useEffect(() => {
     dispatch(setSearchedQuery(""))
-  }, [])
+  }, [dispatch])
 
   return (
     <div>

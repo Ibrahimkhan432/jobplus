@@ -3,10 +3,14 @@ import Navbar from "@/components/global/Navbar";
 import JobCard from "@/components/Jobcard";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import useGetAllJobs from "@/hooks/useGetAllJobs";
 
 function Jobs() {
   const { allJobs } = useSelector((store: any) => store.job);
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
+  
+  // Fetch all jobs when component mounts
+  useGetAllJobs();
 
   const filteredJobs = allJobs?.filter((job: any) => {
     // If no filters, show all jobs

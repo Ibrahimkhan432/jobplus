@@ -2,14 +2,13 @@ import axios from "axios";
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-    baseURL:  import.meta.env.VITE_BACKEND_URL,
+    baseURL: "https://jobplus-backend-production.up.railway.app/",
     withCredentials: false,
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-console.log(import.meta.env.VITE_BACKEND_URL)
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
@@ -17,6 +16,9 @@ axiosInstance.interceptors.request.use(
         const token = localStorage.getItem("token");
         if (token && config.withCredentials !== false) {
             config.headers["Authorization"] = `Bearer ${token}`;
+        }
+        if (config.withCredentials !== false) {
+            config.withCredentials = true;
         }
         return config;
     },
@@ -27,8 +29,8 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if(error){
-      }
+        if (error) {
+        }
         return Promise.reject(error);
     }
 );

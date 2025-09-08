@@ -36,7 +36,7 @@ function JobDescription() {
 
   const applyJobHandler = async () => {
     try {
-      const res = await axiosInstance.post(`/application/apply/${jobId}`, {
+      const res = await axiosInstance.post(`/application/apply/${jobId}`, {}, {
         withCredentials: true,
       })
       if (res.data.success) {
@@ -51,8 +51,12 @@ function JobDescription() {
       }
     } catch (error: any) {
       console.log("error in apply job", error)
-      toast.error(error.response?.data?.message || "Failed to apply for job")
-      navigate("/login")
+      if (error.response?.status === 401) {
+        toast.error("Please login to apply for this job")
+        navigate("/login")
+      } else {
+        toast.error(error.response?.data?.message || "Failed to apply for job")
+      }
     }
   }
 

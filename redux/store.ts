@@ -12,7 +12,24 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+// Fallback storage for incognito mode or when localStorage is not available
+const createNoopStorage = () => {
+  return {
+    getItem(_key: string) {
+      return Promise.resolve(null);
+    },
+    setItem(_key: string, value: any) {
+      return Promise.resolve(value);
+    },
+    removeItem(_key: string) {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage = typeof window !== 'undefined' && window.localStorage 
+  ? require('redux-persist/lib/storage').default 
+  : createNoopStorage();
 
 const persistConfig = {
     key: 'root',
