@@ -2,16 +2,18 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authSlice from './authSlice';
 import jobSlice from './jobSlice';
 import companySlice from "./companySlice";
-import applicationSlice from "./applicationSlice"
+import applicationSlice from "./applicationSlice";
 import {
-    persistReducer,
-    FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER,
-} from 'redux-persist'
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storageLib from 'redux-persist/lib/storage';
+
 // Fallback storage for incognito mode or when localStorage is not available
 const createNoopStorage = () => {
   return {
@@ -27,31 +29,34 @@ const createNoopStorage = () => {
   };
 };
 
-const storage = typeof window !== 'undefined' && window.localStorage 
-  ? require('redux-persist/lib/storage').default 
-  : createNoopStorage();
+const storage =
+  typeof window !== 'undefined' && window.localStorage
+    ? storageLib
+    : createNoopStorage();
 
 const persistConfig = {
-    key: 'root',
-    version: 1,
-    storage,
-}
+  key: 'root',
+  version: 1,
+  storage,
+};
 
 const rootReducer = combineReducers({
-    auth: authSlice,
-    job: jobSlice,
-    company:companySlice,
-    application:applicationSlice
-})
-
-const persistedReducer = persistReducer(persistConfig, rootReducer)
-const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }),
+  auth: authSlice,
+  job: jobSlice,
+  company: companySlice,
+  application: applicationSlice,
 });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
 export default store;
