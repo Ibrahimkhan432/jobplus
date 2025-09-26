@@ -5,6 +5,7 @@ import JobCard from "./Jobcard";
 
 function LatestJobs() {
   const { allJobs } = useSelector((store: any) => store.job);
+  console.log("allJobs in LatestJobs:", allJobs);
 
   return (
     <section className="px-4 sm:px-6 lg:px-10 py-10">

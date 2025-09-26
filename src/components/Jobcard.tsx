@@ -24,10 +24,9 @@ const JobCard = ({ job, searchTerm }: any) => {
     const daysAgo = Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
     return daysAgo;
   };
-
   return (
     <div
-      onClick={() => navigate(`/description/${job?._id}`)}
+      onClick={() => navigate(`/description/${job._id}`)}
       className="p-6 rounded-xl shadow-lg bg-white border border-gray-300 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03] m-4 sm:m-0 cursor-pointer">
       <div className="flex items-center justify-between mb-4 m-2">
         <p className="text-sm text-gray-500">

@@ -9,9 +9,7 @@ const useGetAllJobs = () => {
   useEffect(() => {
     const fetchAllJobs = async () => {
       try {
-        console.log("Fetching jobs with URL:", `https://jobplus-backend-production.up.railway.app/job/get?keyword=${searchedQuery}`);
         const res = await axiosInstance.get(`/job/get?keyword=${searchedQuery}`, {
-          withCredentials: false,
         });
         console.log("Jobs response:", res.data);
         if (res.data.success) {

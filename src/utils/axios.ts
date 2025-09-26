@@ -2,8 +2,8 @@ import axios from "axios";
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-    baseURL: "https://jobplus-backend-production.up.railway.app/",
-    withCredentials: false,
+    baseURL: import.meta.env.VITE_BACKEND_URL || "https://jobplus-backend.vercel.app/",
+    withCredentials: true,
     headers: {
         "Content-Type": "application/json",
     },
